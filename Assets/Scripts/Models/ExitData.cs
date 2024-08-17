@@ -6,16 +6,16 @@ public class ExitData : TileData
 {
     public ExitData(Direction direction,Vector2 position):base(Appliances.exit,position){
         
-        base.direction = direction;
+        base.Direction = direction;
     }
     public void setDirection(Direction direction){
-        this.direction = direction;
+        this.Direction = direction;
     }
-    public override void wantToTake(out Vector2? direction)
+    public override void WantToTake(out Vector2? direction)
     {
-        direction = TileData.DirectionToVector(this.direction);    
+        direction = TileData.DirectionToVector(this.Direction);    
     }
-    public override void receiveFish()
+    public override void ReceiveFish()
     {
         
     }

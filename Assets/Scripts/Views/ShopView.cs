@@ -9,7 +9,7 @@ public class ShopView: MonoBehaviour {
 
     public void CloseShop() {
         AnimatorRef.SetTrigger("CloseShop");
-        Invoke("CloseShopCorotine", 1);
+        Invoke("CloseShopCorotine", 0.3f);
     }
     private void CloseShopCorotine() {
         ECloseShop();

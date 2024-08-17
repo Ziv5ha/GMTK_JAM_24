@@ -4,25 +4,34 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 public class GameController: MonoBehaviour {
-    public int Coins = 0;
     [SerializeField] private TileView _tilePrefab;
     [SerializeField] private Transform _cam;
     [SerializeField] private TileMap _tileMap;
-     private Dictionary<Vector2, TileData> CurrentBoardData;
-     private Dictionary<Vector2, TileView> CurrentBoardView;
-     [SerializeField] private GameObject _gameView;
+    private Dictionary<Vector2, TileData> CurrentBoardData;
+    private Dictionary<Vector2, TileView> CurrentBoardView;
+    [SerializeField] private GameObject _gameView;
+
+    private int _currentCoins = 999;
+    public int CurrentCoins { get { return _currentCoins; } set { _currentCoins = value; Debug.Log($"!@# Setting coins to: {value} "); } }
+    [SerializeField] private TextMeshProUGUI[] _coinTexts;
+
     const int FISH_COIN_VALUE = 1;
 
-    private bool gameStarted = false; 
-    private float timer  =0;
-    private float round  =0;
-    private int width  =0;
-    private int height  =0;
+    private bool gameStarted = false;
+    private float timer = 0;
+    private float round = 0;
+    private int width = 0;
+    private int height = 0;
+
+    public void Init() {
+        UpdateCoinText();
+    }
 
     public void CreateBoard() {
-        
+
         width = UnityEngine.Random.Range(3, 10);
         height = UnityEngine.Random.Range(3, 10);
 
@@ -31,7 +40,7 @@ public class GameController: MonoBehaviour {
 
         for (int x = 0; x < height; x++) {
             for (int y = 0; y < width; y++) {
-                
+
                 TileView spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
                 spawnedTile.transform.parent = _gameView.transform;
                 spawnedTile.name = $"Tile {x} {y}";
@@ -40,57 +49,55 @@ public class GameController: MonoBehaviour {
                 spawnedTile.Init(isOffset);
 
                 Vector2 position = new Vector2(x, y);
-                CurrentBoardData[position] = new TileData(TileData.Appliances.empty,position);
+                CurrentBoardData[position] = new TileData(TileData.Appliances.empty, position);
                 CurrentBoardView[position] = spawnedTile;
             }
         }
         PlaceExit(width, height);
-        
-        PlaceAppliance(new FishBinData(new Vector2(0,2)));
-        PlaceAppliance(new ConveyorData(new Vector2(1,2)));
-        PlaceAppliance(new ScalerData(new Vector2(2,2)));
+
+        PlaceAppliance(new FishBinData(new Vector2(0, 2)));
+        PlaceAppliance(new ConveyorData(new Vector2(1, 2)));
+        PlaceAppliance(new ScalerData(new Vector2(2, 2)));
 
         _cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
         gameStarted = true;
-        
+
         // PrintBoard(CurrentBoard);
     }
 
-    private void PlaceExit( int width, int height) {
+    private void PlaceExit(int width, int height) {
         int xPos = UnityEngine.Random.Range(0, 1) > 1 ? width : 0;
         int yPos = UnityEngine.Random.Range(0, 1) > 1 ? height : 0;
-        Direction direction = xPos == 0 ?Direction.RIGHT:Direction.LEFT;
+        Direction direction = xPos == 0 ? Direction.RIGHT : Direction.LEFT;
         PlaceAppliance(new ExitData(direction, new Vector2(xPos, yPos)));
     }
     private void PlaceAppliance(TileData appliance) {
         Vector2 pos = appliance._position;
         CurrentBoardData[pos] = appliance;
-        UpdateApplianceViews(appliance,pos);
+        UpdateApplianceViews(appliance, pos);
     }
-    private void UpdateApplianceViews(TileData appliance,Vector2 pos){
+    private void UpdateApplianceViews(TileData appliance, Vector2 pos) {
         TileView view = CurrentBoardView[pos];
-        TileView.applianceSprite relevantSprite = Array.Find(view.applianceSpriteList, (t) =>
-        {
+        TileView.applianceSprite relevantSprite = Array.Find(view.applianceSpriteList, (t) => {
             return t.appliance == appliance.Appliance;
         });
-        if(relevantSprite!=null){
-            view.ApplianceRenderer.sprite= relevantSprite.sprite;
-            view.ApplianceRenderer.flipX = appliance.direction ==Direction.RIGHT;
+        if (relevantSprite != null) {
+            view.ApplianceRenderer.sprite = relevantSprite.sprite;
+            view.ApplianceRenderer.flipX = appliance.Direction == Direction.RIGHT;
         }
     }
-    
-    private void updateFishPosition(bool hasFish,Vector2 pos) {
+
+    private void updateFishPosition(bool hasFish, Vector2 pos) {
         TileView view = CurrentBoardView[pos];
-        if(!hasFish){
-            view.FishRenderer.sprite= null;
+        if (!hasFish) {
+            view.FishRenderer.sprite = null;
             return;
         }
-        TileView.fishSprite relevantSprite = Array.Find(view.fishSpriteList, (t) =>
-        {
+        TileView.fishSprite relevantSprite = Array.Find(view.fishSpriteList, (t) => {
             return t.state == FishData.FishState.none;
         });
-        if(relevantSprite!=null){
-            view.FishRenderer.sprite= relevantSprite.sprite;
+        if (relevantSprite != null) {
+            view.FishRenderer.sprite = relevantSprite.sprite;
         }
     }
 
@@ -109,69 +116,84 @@ public class GameController: MonoBehaviour {
     }
 
     public void SellFish() {
-        Coins += FISH_COIN_VALUE;
+        CurrentCoins += FISH_COIN_VALUE;
+        UpdateCoinText();
     }
 
-    public void BuyAppliances(TileData.Appliances appliance) {}
+    public bool TryBuyAppliances(TileData.Appliances appliance) {
+        //if (CurrentCoins < appliance.Cost) return false;
 
-    public void Update(){
-        if(gameStarted){
-            timer+= Time.deltaTime;
-            if(timer >= 1.5f){
-                round+=1;
+        //CurrentCoins -= appliance.Cost;
+        CurrentCoins -= 10;
+        // TODO put appliance in "hand"
+        UpdateCoinText();
+        return true;
+    }
+    public void UpdateCoinText() {
+        Debug.Log($"!@# Updating Coin Texts, CurrentText: {CurrentCoins}");
+        foreach (var coinText in _coinTexts) {
+            coinText.text = CurrentCoins.ToString();
+        }
+    }
+
+    public void Update() {
+        if (gameStarted) {
+            timer += Time.deltaTime;
+            if (timer >= 1.5f) {
+                round += 1;
                 timer = 0;
-                advance();
+                Advance();
             }
         }
     }
-    private void advance(){
+    private void Advance() {
         for (int x = 0; x < height; x++) {
             for (int y = 0; y < width; y++) {
                 Vector2 pos = new Vector2(x, y);
                 TileData cur = CurrentBoardData[pos];
                 cur.clearProcess();
-                if(!cur.Interacable){
+                if (!cur.Interacable) {
                     continue;
                 }
 
-                cur.wantToPush(out Vector2? givePos);
-                
-                if(givePos.HasValue){
+                cur.WantToPush(out Vector2? givePos);
+
+                if (givePos.HasValue) {
 
                     Vector2 giveTargetPos = givePos.Value;
                     TileData giveTarget = CurrentBoardData[giveTargetPos];
-                    if(giveTarget.canReceive()){
+                    if (giveTarget.CanReceive) {
 
-                        giveTarget.receiveFish();
-                        updateFishPosition(true,giveTargetPos);
-                        cur.pushFish();
-                        updateFishPosition(false,pos);
+                        giveTarget.ReceiveFish();
+                        updateFishPosition(true, giveTargetPos);
+                        cur.PushFish();
+                        updateFishPosition(false, pos);
 
                         Debug.Log($"In Round {round} {cur.Appliance} GAVE A FISH to {giveTarget.Appliance} ");
                     }
                 }
-                cur.wantToTake(out Vector2? takePos);
-                if(takePos.HasValue){
+                cur.WantToTake(out Vector2? takePos);
+                if (takePos.HasValue) {
 
                     Vector2 takeTargetPos = takePos.Value;
                     TileData takeTarget = CurrentBoardData[takeTargetPos];
-                    if(takeTarget.canGive()){
-                        takeTarget.pushFish();
-                        updateFishPosition(false,takeTargetPos);
-                        cur.receiveFish();
-                        updateFishPosition(true,pos);
+                    if (takeTarget.CanGive) {
+                        takeTarget.PushFish();
+                        updateFishPosition(false, takeTargetPos);
+                        cur.ReceiveFish();
+                        updateFishPosition(true, pos);
                         Debug.Log($"In Round {round} {cur.Appliance} GOT A FISH from {takeTarget.Appliance} ");
                     }
                 }
-               
-                
-            }
-        }    
-    }
-        
 
-public class TileMap{
-    public TileData tileData;
-    public TileView tileView;
-}
+
+            }
+        }
+    }
+
+
+    public class TileMap {
+        public TileData tileData;
+        public TileView tileView;
+    }
 }
