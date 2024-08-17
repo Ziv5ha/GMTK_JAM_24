@@ -190,10 +190,18 @@ MonoBehaviour:
   ApplianceRenderer: {fileID: 5538951414593482420}
   _highlight: {fileID: 8662405847968482843}
   yomamalist:
+  - sprite: {fileID: 0}
+    appliance: 0
   - sprite: {fileID: 21300000, guid: 300624093c507ee4f8feec66e0f53415, type: 3}
     appliance: 1
   - sprite: {fileID: 21300000, guid: 9c5b5e951839c3a469ca3a6eff1db285, type: 3}
     appliance: 5
+  - sprite: {fileID: 21300000, guid: 9fcaef02951dc5942ac33057eb78549c, type: 3}
+    appliance: 2
+  - sprite: {fileID: 21300000, guid: 24a57b249b4408e46892e5f135af4c7b, type: 3}
+    appliance: 3
+  - sprite: {fileID: 21300000, guid: 058ac201473b9744a8fb7e0852ec0f99, type: 3}
+    appliance: 4
 --- !u!61 &7884933452834823107
 BoxCollider2D:
   m_ObjectHideFlags: 0
