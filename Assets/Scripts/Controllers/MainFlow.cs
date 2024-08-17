@@ -10,6 +10,9 @@ public class MainFlow: MonoBehaviour {
 
     public void StartGame() {
         MenuManagerRef.CloseAll();
+        GameViewRef.gameObject.SetActive(true);
         GameControllerRef.CreateBoard();
     }
+
+
 }
