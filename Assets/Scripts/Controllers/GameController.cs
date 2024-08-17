@@ -39,14 +39,16 @@ public class GameController: MonoBehaviour {
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnedTile.Init(isOffset);
 
-                CurrentBoardData[new Vector2(x, y)] = new TileData(TileData.Appliances.empty);
-                CurrentBoardView[new Vector2(x, y)] = spawnedTile;
+                Vector2 position = new Vector2(x, y);
+                CurrentBoardData[position] = new TileData(TileData.Appliances.empty,position);
+                CurrentBoardView[position] = spawnedTile;
             }
         }
         PlaceExit(width, height);
-        PlaceAppliance(new FishBinData(),new Vector2(0,2));
-        PlaceAppliance(new ConveyorData(),new Vector2(1,2));
-        PlaceAppliance(new ScalerData(),new Vector2(2,2));
+        
+        PlaceAppliance(new FishBinData(new Vector2(0,2)));
+        PlaceAppliance(new ConveyorData(new Vector2(1,2)));
+        PlaceAppliance(new ScalerData(new Vector2(2,2)));
 
         _cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
         gameStarted = true;
@@ -58,10 +60,14 @@ public class GameController: MonoBehaviour {
         int xPos = UnityEngine.Random.Range(0, 1) > 1 ? width : 0;
         int yPos = UnityEngine.Random.Range(0, 1) > 1 ? height : 0;
         Direction direction = xPos == 0 ?Direction.RIGHT:Direction.LEFT;
-        PlaceAppliance(new ExitData(direction), new Vector2(xPos, yPos));
+        PlaceAppliance(new ExitData(direction, new Vector2(xPos, yPos)));
     }
-    private void PlaceAppliance(TileData appliance,Vector2 pos) {
+    private void PlaceAppliance(TileData appliance) {
+        Vector2 pos = appliance._position;
         CurrentBoardData[pos] = appliance;
+        UpdateApplianceViews(appliance,pos);
+    }
+    private void UpdateApplianceViews(TileData appliance,Vector2 pos){
         TileView view = CurrentBoardView[pos];
         TileView.applianceSprite relevantSprite = Array.Find(view.applianceSpriteList, (t) =>
         {
@@ -132,7 +138,7 @@ public class GameController: MonoBehaviour {
                 
                 if(givePos.HasValue){
 
-                    Vector2 giveTargetPos = pos + givePos.Value;
+                    Vector2 giveTargetPos = givePos.Value;
                     TileData giveTarget = CurrentBoardData[giveTargetPos];
                     if(giveTarget.canReceive()){
 
@@ -147,7 +153,7 @@ public class GameController: MonoBehaviour {
                 cur.wantToTake(out Vector2? takePos);
                 if(takePos.HasValue){
 
-                    Vector2 takeTargetPos = pos + takePos.Value;
+                    Vector2 takeTargetPos = takePos.Value;
                     TileData takeTarget = CurrentBoardData[takeTargetPos];
                     if(takeTarget.canGive()){
                         takeTarget.pushFish();

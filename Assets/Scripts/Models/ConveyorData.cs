@@ -5,7 +5,7 @@ using UnityEngine;
 public class ConveyorData : TileData
 {
 
-    public ConveyorData():base(Appliances.conveyor){}    
+    public ConveyorData(Vector2 position):base(Appliances.conveyor,position){}    
     public new int cost = 5;
 
     public override bool canReceive()
@@ -20,10 +20,11 @@ public class ConveyorData : TileData
     }
     public override void wantToTake(out Vector2? direction)
     {
-        direction = this.canReceive()? TileData.DirectionToVector(this.direction) : null;    
+        
+        direction = this.canReceive()? _position+TileData.DirectionToVector(this.direction) : null;    
     }
     public override void wantToPush(out Vector2? direction)
     {
-        direction = this.canGive()? -TileData.DirectionToVector(this.direction): null;    
+        direction = this.canGive()? _position-TileData.DirectionToVector(this.direction): null;    
     }
 }

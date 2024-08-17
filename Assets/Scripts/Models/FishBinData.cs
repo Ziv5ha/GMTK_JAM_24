@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FishBinData : TileData
 {
-    public FishBinData():base(Appliances.supplies){
+    public FishBinData(Vector2 position):base(Appliances.supplies,position){
         _hasFish = true;
     }
     public new int cost = 10;

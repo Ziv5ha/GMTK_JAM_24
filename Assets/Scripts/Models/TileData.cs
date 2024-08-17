@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TileData {
     protected bool _hasFish = false;
     protected bool _isProcessing  = false;
     public Direction direction { get; protected set;} = Direction.LEFT ;
 
+    public Vector2 _position;
     
     static public int cost = 0;
 
@@ -21,13 +23,14 @@ public class TileData {
     public bool canGive (){
         return _hasFish && !_isProcessing;
     }
-     virtual public bool canReceive (){
+    virtual public bool canReceive (){
 
 
         return Interacable && !_hasFish && !_isProcessing;
     }
 
-        public TileData(Appliances appliance){
+    public TileData(Appliances appliance,Vector2 position){
+        _position = position;
         Appliance = appliance;
     }
 
@@ -77,6 +80,10 @@ public class TileData {
             default:
                 throw new System.Exception();
         }
+    }
+
+    void setPosition(Vector2 position ){
+        this._position = position;
     }
 
 public enum Appliances { empty, supplies, conveyor, butcher, packer, exit };

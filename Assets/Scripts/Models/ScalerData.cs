@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ScalerData : TileData
 {
-    public ScalerData():base(Appliances.butcher){
+    public ScalerData(Vector2 position):base(Appliances.butcher,position){
 
     }
     public new int cost = 10;
