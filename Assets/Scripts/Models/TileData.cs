@@ -1,8 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TileData {
+    protected bool _hasFish = false;
+    protected bool _isProcessing = false;
+    protected Direction _direction =Direction.RIGHT ;
+    static public int cost = 0;
+
+     virtual public void wantToPull ( out Direction? direction){
+        direction = null;
+    }
+     virtual public bool canPush (){
+        return false;
+    }
+
     public enum Appliances { empty, supplies, conveyor, butcher, packer, exit };
     public Appliances Appliance = Appliances.empty;
     public bool Interacable { get { return Appliance != Appliances.empty; } }
@@ -25,7 +38,13 @@ public class TileData {
         }
     }
 
+    
+
     public override string ToString() {
         return Appliance.ToString();
     }
+}
+
+public enum Direction{
+    UP,RIGHT,DOWN,LEFT
 }
