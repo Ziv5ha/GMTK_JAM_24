@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ExitData : TileData
 {
-    public ExitData(Direction direction){
-        Appliance = Appliances.exit;
+    public ExitData(Direction direction):base(Appliances.exit){
+        
         base.direction = direction;
     }
     public void setDirection(Direction direction){

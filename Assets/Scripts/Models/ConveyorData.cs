@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ConveyorData : TileData
 {
+
+    public ConveyorData():base(Appliances.conveyor){}    
     public new int cost = 5;
 
     public override bool canPush()

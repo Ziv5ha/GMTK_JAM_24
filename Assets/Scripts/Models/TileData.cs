@@ -19,8 +19,12 @@ public class TileData {
     }
 
     public enum Appliances { empty, supplies, conveyor, butcher, packer, exit };
-    public Appliances Appliance = Appliances.empty;
+    public Appliances Appliance;
     public bool Interacable { get { return Appliance != Appliances.empty; } }
+
+    public TileData(Appliances appliance){
+        Appliance = appliance;
+    }
 
     public string ToShortString() {
         switch (Appliance) {
