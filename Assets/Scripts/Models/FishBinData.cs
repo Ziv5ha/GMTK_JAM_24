@@ -6,11 +6,12 @@ using UnityEngine;
 public class FishBinData : TileData
 {
     public FishBinData():base(Appliances.supplies){
-
+        _hasFish = true;
     }
     public new int cost = 10;
-    public override bool canPush()
+    public override void pushFish()
     {
-        return true;
+return;
     }
+    
 }

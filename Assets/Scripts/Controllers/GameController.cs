@@ -15,10 +15,16 @@ public class GameController: MonoBehaviour {
      [SerializeField] private GameObject _gameView;
     const int FISH_COIN_VALUE = 1;
 
+    private bool gameStarted = false; 
+    private float timer  =0;
+    private float round  =0;
+    private int width  =0;
+    private int height  =0;
+
     public void CreateBoard() {
         
-        int width = UnityEngine.Random.Range(3, 10);
-        int height = UnityEngine.Random.Range(3, 10);
+        width = UnityEngine.Random.Range(3, 10);
+        height = UnityEngine.Random.Range(3, 10);
 
         CurrentBoardData = new Dictionary<Vector2, TileData>();
         CurrentBoardView = new Dictionary<Vector2, TileView>();
@@ -43,7 +49,8 @@ public class GameController: MonoBehaviour {
         PlaceAppliance(new ScalerData(),new Vector2(2,2));
 
         _cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
-
+        gameStarted = true;
+        
         // PrintBoard(CurrentBoard);
     }
 
@@ -56,7 +63,6 @@ public class GameController: MonoBehaviour {
     private void PlaceAppliance(TileData appliance,Vector2 pos) {
         CurrentBoardData[pos] = appliance;
         TileView view = CurrentBoardView[pos];
-        Debug.Log(appliance.Appliance );
         TileView.yomama relevantSprite = Array.Find(view.yomamalist, (t) =>
         {
             return t.appliance == appliance.Appliance;
@@ -85,9 +91,56 @@ public class GameController: MonoBehaviour {
         Coins += FISH_COIN_VALUE;
     }
 
-    public void BuyAppliances(TileData.Appliances appliance) {
+    public void BuyAppliances(TileData.Appliances appliance) {}
 
+    public void Update(){
+        if(gameStarted){
+            timer+= Time.deltaTime;
+            if(timer >= 1.5f){
+                round+=1;
+                timer = 0;
+                advance();
+            }
+        }
     }
+    private void advance(){
+        for (int x = 0; x < height; x++) {
+            for (int y = 0; y < width; y++) {
+                Vector2 pos = new Vector2(x, y);
+                TileData cur = CurrentBoardData[pos];
+                cur.clearProcess();
+                if(!cur.Interacable){
+                    continue;
+                }
+
+                cur.wantToPush(out Vector2? givePos);
+                
+                if(givePos.HasValue){
+                 
+                    TileData giveTarget = CurrentBoardData[pos+givePos.Value ];
+                    if(giveTarget.canReceive()){
+
+                        giveTarget.receiveFish();
+                        cur.pushFish();
+                        Debug.Log($"In Round {round} {cur.Appliance} GAVE A FISH to {giveTarget.Appliance} ");
+                    }
+                }
+                cur.wantToTake(out Vector2? takePos);
+                if(takePos.HasValue){
+                    
+                    TileData takeTarget = CurrentBoardData[pos+takePos.Value ];
+                    if(takeTarget.canGive()){
+                        takeTarget.pushFish();
+                        cur.receiveFish();
+                        Debug.Log($"In Round {round} {cur.Appliance} GOT A FISH from {takeTarget.Appliance} ");
+                    }
+                }
+               
+                
+            }
+        }    
+    }
+        
 
 public class TileMap{
     public TileData tileData;

@@ -11,8 +11,12 @@ public class ExitData : TileData
     public void setDirection(Direction direction){
         this.direction = direction;
     }
-    public override void wantToPull(out Direction? direction)
+    public override void wantToTake(out Vector2? direction)
     {
-        direction = this.direction;    
+        direction = TileData.DirectionToVector(this.direction);    
+    }
+    public override void receiveFish()
+    {
+        
     }
 }

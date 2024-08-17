@@ -9,9 +9,5 @@ public class ScalerData : TileData
     }
     public new int cost = 10;
 
-    public override bool canPush()
-    {
-        return  this._hasFish&&!this._isProcessing;
-    }
 
 }
