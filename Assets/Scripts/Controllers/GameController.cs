@@ -63,13 +63,28 @@ public class GameController: MonoBehaviour {
     private void PlaceAppliance(TileData appliance,Vector2 pos) {
         CurrentBoardData[pos] = appliance;
         TileView view = CurrentBoardView[pos];
-        TileView.yomama relevantSprite = Array.Find(view.yomamalist, (t) =>
+        TileView.applianceSprite relevantSprite = Array.Find(view.applianceSpriteList, (t) =>
         {
             return t.appliance == appliance.Appliance;
         });
         if(relevantSprite!=null){
             view.ApplianceRenderer.sprite= relevantSprite.sprite;
             view.ApplianceRenderer.flipX = appliance.direction ==Direction.RIGHT;
+        }
+    }
+    
+    private void updateFishPosition(bool hasFish,Vector2 pos) {
+        TileView view = CurrentBoardView[pos];
+        if(!hasFish){
+            view.FishRenderer.sprite= null;
+            return;
+        }
+        TileView.fishSprite relevantSprite = Array.Find(view.fishSpriteList, (t) =>
+        {
+            return t.state == FishData.FishState.none;
+        });
+        if(relevantSprite!=null){
+            view.FishRenderer.sprite= relevantSprite.sprite;
         }
     }
 
@@ -116,22 +131,29 @@ public class GameController: MonoBehaviour {
                 cur.wantToPush(out Vector2? givePos);
                 
                 if(givePos.HasValue){
-                 
-                    TileData giveTarget = CurrentBoardData[pos+givePos.Value ];
+
+                    Vector2 giveTargetPos = pos + givePos.Value;
+                    TileData giveTarget = CurrentBoardData[giveTargetPos];
                     if(giveTarget.canReceive()){
 
                         giveTarget.receiveFish();
+                        updateFishPosition(true,giveTargetPos);
                         cur.pushFish();
+                        updateFishPosition(false,pos);
+
                         Debug.Log($"In Round {round} {cur.Appliance} GAVE A FISH to {giveTarget.Appliance} ");
                     }
                 }
                 cur.wantToTake(out Vector2? takePos);
                 if(takePos.HasValue){
-                    
-                    TileData takeTarget = CurrentBoardData[pos+takePos.Value ];
+
+                    Vector2 takeTargetPos = pos + takePos.Value;
+                    TileData takeTarget = CurrentBoardData[takeTargetPos];
                     if(takeTarget.canGive()){
                         takeTarget.pushFish();
+                        updateFishPosition(false,takeTargetPos);
                         cur.receiveFish();
+                        updateFishPosition(true,pos);
                         Debug.Log($"In Round {round} {cur.Appliance} GOT A FISH from {takeTarget.Appliance} ");
                     }
                 }

@@ -8,9 +8,11 @@ public class TileView: MonoBehaviour {
     [SerializeField] private Color _baseColor, _offsetColor;
     public SpriteRenderer Renderer;
     public SpriteRenderer ApplianceRenderer;
+    public SpriteRenderer FishRenderer;
     [SerializeField] private GameObject _highlight;
     
-    public yomama[] yomamalist;
+    public applianceSprite[] applianceSpriteList;
+    public fishSprite[] fishSpriteList;
 
     public void Init(bool isOffset) {
         Renderer.color = isOffset ? _offsetColor : _baseColor;
@@ -28,9 +30,15 @@ public class TileView: MonoBehaviour {
     }
         
     [Serializable]
-     public class yomama {
+     public class applianceSprite {
 
        public Sprite sprite;
        public  TileData.Appliances appliance;
+    }
+    [Serializable]
+     public class fishSprite {
+
+       public Sprite sprite;
+       public  FishData.FishState state;
     }
 }
