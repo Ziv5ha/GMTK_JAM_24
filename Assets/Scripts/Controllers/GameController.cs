@@ -31,9 +31,9 @@ public class GameController: MonoBehaviour {
     }
 
     public void CreateBoard() {
-
-        width = UnityEngine.Random.Range(3, 10);
-        height = UnityEngine.Random.Range(3, 10);
+        
+        width = UnityEngine.Random.Range(4, 10);
+        height = UnityEngine.Random.Range(4, 10);
 
         CurrentBoardData = new Dictionary<Vector2, TileData>();
         CurrentBoardView = new Dictionary<Vector2, TileView>();
@@ -54,10 +54,11 @@ public class GameController: MonoBehaviour {
             }
         }
         PlaceExit(width, height);
-
-        PlaceAppliance(new FishBinData(new Vector2(0, 2)));
-        PlaceAppliance(new ConveyorData(new Vector2(1, 2)));
-        PlaceAppliance(new ScalerData(new Vector2(2, 2)));
+        
+        PlaceAppliance(new FishBinData(new Vector2(0,2)));
+        PlaceAppliance(new ConveyorData(new Vector2(1,2)));
+        PlaceAppliance(new ScalerData(new Vector2(2,2)));
+        PlaceAppliance(new ConveyorData(new Vector2(3,2)));
 
         _cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
         gameStarted = true;
@@ -83,7 +84,7 @@ public class GameController: MonoBehaviour {
         });
         if (relevantSprite != null) {
             view.ApplianceRenderer.sprite = relevantSprite.sprite;
-            view.ApplianceRenderer.flipX = appliance.Direction == Direction.RIGHT;
+            view.ApplianceRenderer.flipX = appliance.direction == Direction.RIGHT;
         }
     }
 
@@ -151,49 +152,53 @@ public class GameController: MonoBehaviour {
             for (int y = 0; y < width; y++) {
                 Vector2 pos = new Vector2(x, y);
                 TileData cur = CurrentBoardData[pos];
-                cur.clearProcess();
-                if (!cur.Interacable) {
+
+                if(!cur.Interacable){
                     continue;
                 }
 
+                if(cur.doProcess()){
+                    Debug.Log($"in round {round}, ${cur.Appliance} was proccessing ({cur.processingLeft})");
+                    continue;
+                };
                 cur.WantToPush(out Vector2? givePos);
-
-                if (givePos.HasValue) {
-
+                
+                if(givePos.HasValue)
+                {
                     Vector2 giveTargetPos = givePos.Value;
                     TileData giveTarget = CurrentBoardData[giveTargetPos];
-                    if (giveTarget.CanReceive) {
-
-                        giveTarget.ReceiveFish();
-                        updateFishPosition(true, giveTargetPos);
-                        cur.PushFish();
-                        updateFishPosition(false, pos);
-
-                        Debug.Log($"In Round {round} {cur.Appliance} GAVE A FISH to {giveTarget.Appliance} ");
-                    }
+                    AttemptFishTransaction(cur, giveTarget,"push");
+                    // continue;
                 }
                 cur.WantToTake(out Vector2? takePos);
                 if (takePos.HasValue) {
 
                     Vector2 takeTargetPos = takePos.Value;
                     TileData takeTarget = CurrentBoardData[takeTargetPos];
-                    if (takeTarget.CanGive) {
-                        takeTarget.PushFish();
-                        updateFishPosition(false, takeTargetPos);
-                        cur.ReceiveFish();
-                        updateFishPosition(true, pos);
-                        Debug.Log($"In Round {round} {cur.Appliance} GOT A FISH from {takeTarget.Appliance} ");
-                    }
+                    AttemptFishTransaction(takeTarget, cur,"pull");
                 }
-
-
+               
+                
             }
+        }    
+    }
+
+    private void AttemptFishTransaction( TileData giver,  TileData receiver,string action)
+    {
+        if (giver.CanGive && receiver.CanReceive)
+        {
+
+            receiver.ReceiveFish();
+            updateFishPosition(true, receiver._position);
+            giver.PushFish();
+            updateFishPosition(false, giver._position);
+
+            Debug.Log($"In Round {round} {giver.Appliance} GAVE A FISH to {receiver.Appliance} ({action})");
         }
     }
 
-
-    public class TileMap {
-        public TileData tileData;
-        public TileView tileView;
-    }
+    public class TileMap{
+    public TileData tileData;
+    public TileView tileView;
+}
 }
