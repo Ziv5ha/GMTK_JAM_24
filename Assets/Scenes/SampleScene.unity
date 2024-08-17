@@ -675,7 +675,6 @@ GameObject:
   - component: {fileID: 1257585535}
   - component: {fileID: 1257585534}
   - component: {fileID: 1257585533}
-  - component: {fileID: 1257585536}
   m_Layer: 0
   m_Name: CoreSingletons
   m_TagString: Untagged
@@ -696,6 +695,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Coins: 0
+  _tilePrefab: {fileID: 5834267471389785099, guid: 56f464c0c8fc0434aa2512eb4a63f2c0, type: 3}
+  _cam: {fileID: 519420032}
+  _gameView: {fileID: 254682314}
 --- !u!114 &1257585534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -726,23 +728,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1257585536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1257585532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c4ab8400c315f44a9c344964c10a27c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _width: 16
-  _height: 9
-  _tilePrefab: {fileID: 5834267471389785099, guid: 56f464c0c8fc0434aa2512eb4a63f2c0, type: 3}
-  _cam: {fileID: 519420032}
-  _gameView: {fileID: 254682314}
 --- !u!1 &1336535747
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,7 +952,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 62.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1254,7 +1239,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.95
+  m_fontSize: 18.7
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

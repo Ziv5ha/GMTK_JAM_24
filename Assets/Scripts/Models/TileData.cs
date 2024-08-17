@@ -6,7 +6,9 @@ using UnityEngine;
 public class TileData {
     protected bool _hasFish = false;
     protected bool _isProcessing = false;
-    protected Direction _direction =Direction.RIGHT ;
+    protected Direction _direction =Direction.RIGHT {get }{return _direction};
+
+    
     static public int cost = 0;
 
      virtual public void wantToPull ( out Direction? direction){

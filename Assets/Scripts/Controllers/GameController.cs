@@ -1,34 +1,67 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class GameController: MonoBehaviour {
     public int Coins = 0;
-    public List<List<TileData>> CurrentBoard = new List<List<TileData>>();
-
+    [SerializeField] private TileView _tilePrefab;
+    [SerializeField] private Transform _cam;
+    [SerializeField] private TileMap _tileMap;
+     private Dictionary<Vector2, TileData> CurrentBoardData;
+     private Dictionary<Vector2, TileView> CurrentBoardView;
+     [SerializeField] private GameObject _gameView;
     const int FISH_COIN_VALUE = 1;
 
     public void CreateBoard() {
-        List<List<TileData>> Board = new List<List<TileData>>();
-        int width = Random.Range(3, 10);
-        int height = Random.Range(3, 10);
+        
+        int width = UnityEngine.Random.Range(3, 10);
+        int height = UnityEngine.Random.Range(3, 10);
 
-        for (int i = 0; i < height; i++) {
-            Board.Add(new List<TileData>());
-            for (int j = 0; j < width; j++) {
-                Board[i].Add(new TileData());
+        CurrentBoardData = new Dictionary<Vector2, TileData>();
+        CurrentBoardView = new Dictionary<Vector2, TileView>();
+
+        for (int x = 0; x < height; x++) {
+            for (int y = 0; y < width; y++) {
+                
+                TileView spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
+                spawnedTile.transform.parent = _gameView.transform;
+                spawnedTile.name = $"Tile {x} {y}";
+
+                var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
+                spawnedTile.Init(isOffset);
+
+                CurrentBoardData[new Vector2(x, y)] = new TileData();
+                CurrentBoardView[new Vector2(x, y)] = spawnedTile;
             }
         }
-        PlaceExit(Board, width, height);
-        CurrentBoard = Board;
+        PlaceExit(width, height);
+        _cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
 
-        PrintBoard(CurrentBoard);
+        // PrintBoard(CurrentBoard);
     }
 
-    private void PlaceExit(List<List<TileData>> Board, int width, int height) {
-        int xPos = Random.Range(0, 1) > 1 ? width : 0;
-        int yPos = Random.Range(0, 1) > 1 ? height : 0;
-        Board[yPos][xPos].Appliance = TileData.Appliances.exit;
+    private void PlaceExit( int width, int height) {
+        int xPos = UnityEngine.Random.Range(0, 1) > 1 ? width : 0;
+        int yPos = UnityEngine.Random.Range(0, 1) > 1 ? height : 0;
+        Direction direction = xPos == 0 ?Direction.RIGHT:Direction.LEFT;
+        Debug.Log($"Fuckiong posiution {xPos},{yPos}");
+        ExitData appliance = new ExitData(direction);
+        Debug.Log($"11: {appliance.Appliance}");
+        PlaceAppliance(appliance, new Vector2(xPos, yPos));
+    }
+    private void PlaceAppliance(TileData appliance,Vector2 pos) {
+        CurrentBoardData[pos] = appliance;
+        TileView view = CurrentBoardView[pos];
+        Debug.Log(appliance.Appliance);
+        TileView.yomama relevantSprite = Array.Find(view.yomamalist, (t) =>
+        {
+            return t.appliance == appliance.Appliance;
+        });
+        if(relevantSprite!=null){
+            view.ApplianceRenderer.sprite= relevantSprite.sprite;
+        }
     }
 
     private void PrintBoard(List<List<TileData>> Board) {
@@ -53,4 +86,8 @@ public class GameController: MonoBehaviour {
 
     }
 
+public class TileMap{
+    public TileData tileData;
+    public TileView tileView;
+}
 }
