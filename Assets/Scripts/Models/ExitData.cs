@@ -6,13 +6,13 @@ public class ExitData : TileData
 {
     public ExitData(Direction direction){
         Appliance = Appliances.exit;
-        _direction = direction;
+        base.direction = direction;
     }
     public void setDirection(Direction direction){
-        this._direction = direction;
+        this.direction = direction;
     }
     public override void wantToPull(out Direction? direction)
     {
-        direction = this._direction;    
+        direction = this.direction;    
     }
 }

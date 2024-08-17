@@ -6,7 +6,7 @@ using UnityEngine;
 public class TileData {
     protected bool _hasFish = false;
     protected bool _isProcessing = false;
-    protected Direction _direction =Direction.RIGHT {get }{return _direction};
+    public Direction direction { get; protected set;} =Direction.RIGHT ;
 
     
     static public int cost = 0;

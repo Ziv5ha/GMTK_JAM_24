@@ -12,10 +12,10 @@ public class ConveyorData : TileData
     }
 
     public void setDirection(Direction direction){
-        this._direction = direction;
+        this.direction = direction;
     }
     public override void wantToPull(out Direction? direction)
     {
-        direction = !this._hasFish? this._direction: null;    
+        direction = !this._hasFish? this.direction: null;    
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -61,6 +62,7 @@ public class GameController: MonoBehaviour {
         });
         if(relevantSprite!=null){
             view.ApplianceRenderer.sprite= relevantSprite.sprite;
+            view.ApplianceRenderer.flipX = appliance.direction ==Direction.RIGHT;
         }
     }
 
