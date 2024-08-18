@@ -5,7 +5,7 @@ using UnityEngine;
 public class ScalerData : TileData
 {
 
-    public ScalerData(Vector2 position) : base(Appliances.butcher,position){
+    public ScalerData(Vector2 position) : base(Appliances.Scaler,position){
         ProcessingDuration  = 3;
     }
     public override bool doProcess(){

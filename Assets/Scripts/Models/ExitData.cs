@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ExitData: TileData {
     public Action ESellFish;
-    public ExitData(Direction direction, Vector2 position) : base(Appliances.exit, position) {
+    public ExitData(Direction direction, Vector2 position) : base(Appliances.Exit, position) {
 
         base.direction = direction;
     }

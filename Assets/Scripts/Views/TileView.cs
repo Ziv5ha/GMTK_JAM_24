@@ -9,7 +9,7 @@ public class TileView: MonoBehaviour {
     public SpriteRenderer Renderer;
     public SpriteRenderer ApplianceRenderer;
     public SpriteRenderer FishRenderer;
-    public Animator animator;
+    public Animator appAnimator;
     [SerializeField] private GameObject _highlight;
 
     public Vector2 Pos;
@@ -69,6 +69,19 @@ public class TileView: MonoBehaviour {
         }
     }
 
+    public void UpdateAnim(TileData.Appliances app,bool isBusy){
+        string state = isBusy? "busy" : "idle";
+        string key = $"{app}_{state}";
+        
+        appAnimator.enabled = true;
+        if(!appAnimator.GetCurrentAnimatorStateInfo(0).IsName(key)){
+            Debug.Log("playing "+ key);
+            appAnimator.Play(key);
+
+        }
+
+    } 
+        
 
     [Serializable]
     public class applianceSprite {

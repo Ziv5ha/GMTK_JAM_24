@@ -48,17 +48,17 @@ public class TileData {
 
     public string ToShortString() {
         switch (Appliance) {
-            case Appliances.exit:
+            case Appliances.Exit:
                 return "X";
-            case Appliances.supplies:
+            case Appliances.FishBin:
                 return "s";
-            case Appliances.butcher:
+            case Appliances.Scaler:
                 return "b";
-            case Appliances.packer:
+            case Appliances.Packer:
                 return "p";
-            case Appliances.conveyor:
+            case Appliances.Conveyor:
                 return "-";
-            case Appliances.empty:
+            case Appliances.Empty:
             default:
                 return " ";
         }
@@ -106,9 +106,9 @@ public class TileData {
         this._position = position;
     }
 
-    public enum Appliances { empty, supplies, conveyor, butcher, packer, exit };
+    public enum Appliances { Empty, FishBin, Conveyor, Scaler, Packer, Exit };
     public Appliances Appliance;
-    public bool Interacable { get { return Appliance != Appliances.empty; } }
+    public bool Interacable { get { return Appliance != Appliances.Empty; } }
 
     enum ApplianceState {
         idle,

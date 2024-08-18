@@ -31,16 +31,16 @@ public class MainFlow: MonoBehaviour {
         }
     }
     public void BuySupplies() {
-        BuyAppliance(TileData.Appliances.supplies);
+        BuyAppliance(TileData.Appliances.FishBin);
     }
     public void BuyConveyor() {
-        BuyAppliance(TileData.Appliances.conveyor);
+        BuyAppliance(TileData.Appliances.Conveyor);
     }
     public void BuyButcher() {
-        BuyAppliance(TileData.Appliances.butcher);
+        BuyAppliance(TileData.Appliances.Scaler);
     }
     public void BuyPacker() {
-        BuyAppliance(TileData.Appliances.packer);
+        BuyAppliance(TileData.Appliances.Packer);
     }
 
 }

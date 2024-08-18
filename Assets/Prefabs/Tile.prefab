@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1932888515684912185}
   - component: {fileID: 5538951414593482420}
+  - component: {fileID: 5225538758239206787}
   m_Layer: 0
   m_Name: Appliance
   m_TagString: Untagged
@@ -84,6 +85,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &5225538758239206787
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333263902859657240}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 87d180040112f2e47a3c454b5d47604b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1329731959929803152
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +202,6 @@ GameObject:
   - component: {fileID: 4169317582088873132}
   - component: {fileID: 5834267471389785099}
   - component: {fileID: 7884933452834823107}
-  - component: {fileID: 5351895257305205906}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -275,7 +296,7 @@ MonoBehaviour:
   Renderer: {fileID: 4169317582088873132}
   ApplianceRenderer: {fileID: 5538951414593482420}
   FishRenderer: {fileID: 7564383470277725998}
-  animator: {fileID: 0}
+  appAnimator: {fileID: 5225538758239206787}
   _highlight: {fileID: 8662405847968482843}
   Pos: {x: 0, y: 0}
   applianceSpriteList:
@@ -326,27 +347,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!95 &5351895257305205906
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2059557055006041195}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: abc4f578014e3e74587e0eb5a5277fcb, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8662405847968482843
 GameObject:
   m_ObjectHideFlags: 0

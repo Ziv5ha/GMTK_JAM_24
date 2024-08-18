@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class FishBinData: TileData {
-    public FishBinData(Vector2 position) : base(Appliances.supplies, position) {
+    public FishBinData(Vector2 position) : base(Appliances.FishBin, position) {
     }
     
     public new int Cost = 10;

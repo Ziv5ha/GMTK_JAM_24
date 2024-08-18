@@ -26,10 +26,10 @@ public class ShopController: MonoBehaviour {
 
     private void CreateApplianceCostDic() {
         _applianceCosts = new Dictionary<TileData.Appliances, int>();
-        _applianceCosts.Add(TileData.Appliances.butcher, 10);
-        _applianceCosts.Add(TileData.Appliances.conveyor, 10);
-        _applianceCosts.Add(TileData.Appliances.packer, 10);
-        _applianceCosts.Add(TileData.Appliances.supplies, 10);
+        _applianceCosts.Add(TileData.Appliances.Scaler, 10);
+        _applianceCosts.Add(TileData.Appliances.Conveyor, 10);
+        _applianceCosts.Add(TileData.Appliances.Packer, 10);
+        _applianceCosts.Add(TileData.Appliances.FishBin, 10);
     }
 
     public bool TryBuyAppliances(TileData.Appliances appliance) {
