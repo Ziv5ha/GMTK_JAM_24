@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class TileData {
     
-    protected bool _hasFish = false;
+    protected FishData.FishState? _Fish;
     protected int _isProcessing  = 0;
     protected int ProcessingDuration  = 1;
     public Direction direction { get; protected set;} = Direction.LEFT ;
@@ -14,7 +14,7 @@ public class TileData {
     public Vector2 _position;
 
     static public int Cost = 0;
-
+    public string id {get {return $"{Appliance} ({_position})";}}
     virtual public void WantToTake(out Vector2? direction) {
 
         direction = null;
@@ -29,9 +29,11 @@ public class TileData {
         get{return _isProcessing;}
     }
 
-    public bool CanGive { get { return _hasFish && !isBusy; } }
+    public bool hasFish { get{ return _Fish!=  null; } }
 
-    virtual public bool CanReceive { get { return Interacable && !_hasFish && !isBusy; } }
+    public bool CanGive { get { return hasFish && !isBusy; } }
+
+    virtual public bool CanReceive { get {  return Interacable && !hasFish && !isBusy; } }
 
 
     public TileData(Appliances appliance,Vector2 position){
@@ -61,12 +63,17 @@ public class TileData {
         return Appliance.ToString();
     }
 
-    virtual public void ReceiveFish(){
+    virtual public void ReceiveFish(FishData.FishState fish){
         _isProcessing = ProcessingDuration;
-        _hasFish = true;
+        _Fish = fish;
     }
-    virtual public void PushFish() {
-        _hasFish = false;
+    virtual public FishData.FishState PushFish() {
+        if(!hasFish){
+            throw new System.Exception($"{Appliance} at {_position} Tried to give a fish they dont have");
+        }
+        FishData.FishState fish = _Fish.Value;
+        _Fish = null;
+        return fish;
     }
 
     public bool doProcess(){

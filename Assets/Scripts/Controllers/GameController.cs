@@ -156,13 +156,12 @@ public class GameController: MonoBehaviour {
                 if(!cur.Interacable){
                     continue;
                 }
-
                 if(cur.doProcess()){
-                    Debug.Log($"in round {round}, ${cur.Appliance} was proccessing ({cur.processingLeft})");
+                    // Debug.Log($"in round {round}, {cur.Appliance} was proccessing ({cur.processingLeft})");
                     continue;
                 };
+
                 cur.WantToPush(out Vector2? givePos);
-                
                 if(givePos.HasValue)
                 {
                     Vector2 giveTargetPos = givePos.Value;
@@ -170,6 +169,8 @@ public class GameController: MonoBehaviour {
                     AttemptFishTransaction(cur, giveTarget,"push");
                     // continue;
                 }
+                
+
                 cur.WantToTake(out Vector2? takePos);
                 if (takePos.HasValue) {
 
@@ -183,17 +184,20 @@ public class GameController: MonoBehaviour {
         }    
     }
 
+    void test (TileData cur,string message){
+        if(cur.Appliance == TileData.Appliances.conveyor){
+            Debug.Log($"round {round} - "+message);
+        }
+    }
     private void AttemptFishTransaction( TileData giver,  TileData receiver,string action)
     {
         if (giver.CanGive && receiver.CanReceive)
         {
-
-            receiver.ReceiveFish();
+            receiver.ReceiveFish(giver.PushFish());
             updateFishPosition(true, receiver._position);
-            giver.PushFish();
             updateFishPosition(false, giver._position);
 
-            Debug.Log($"In Round {round} {giver.Appliance} GAVE A FISH to {receiver.Appliance} ({action})");
+            // Debug.Log($"In Round {round} {giver.Appliance} GAVE A FISH to {receiver.Appliance} ({action})");
         }
     }
 
