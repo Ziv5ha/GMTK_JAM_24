@@ -58,7 +58,7 @@ public class TileData {
         _hasFish = false;
     }
 
-    public void ClearProcess() {
+    public void clearProcess() {
         this._isProcessing = false;
     }
     public static Vector2 DirectionToVector(Direction direction) {
@@ -79,7 +79,6 @@ public class TileData {
     void SetPosition(Vector2 position) {
         this._position = position;
     }
-
 
     public enum Appliances { empty, supplies, conveyor, butcher, packer, exit };
     public Appliances Appliance;
