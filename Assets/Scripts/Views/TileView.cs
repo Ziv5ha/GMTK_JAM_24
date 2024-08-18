@@ -9,6 +9,7 @@ public class TileView: MonoBehaviour {
     public SpriteRenderer Renderer;
     public SpriteRenderer ApplianceRenderer;
     public SpriteRenderer FishRenderer;
+    public Animator animator;
     [SerializeField] private GameObject _highlight;
 
     public Vector2 Pos;

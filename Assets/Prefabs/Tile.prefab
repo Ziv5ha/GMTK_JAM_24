@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -156,7 +156,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 2
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: 4169317582088873132}
   - component: {fileID: 5834267471389785099}
   - component: {fileID: 7884933452834823107}
+  - component: {fileID: 5351895257305205906}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -274,7 +275,9 @@ MonoBehaviour:
   Renderer: {fileID: 4169317582088873132}
   ApplianceRenderer: {fileID: 5538951414593482420}
   FishRenderer: {fileID: 7564383470277725998}
+  animator: {fileID: 0}
   _highlight: {fileID: 8662405847968482843}
+  Pos: {x: 0, y: 0}
   applianceSpriteList:
   - sprite: {fileID: 0}
     appliance: 0
@@ -288,6 +291,8 @@ MonoBehaviour:
     appliance: 4
   - sprite: {fileID: 21300000, guid: 9c5b5e951839c3a469ca3a6eff1db285, type: 3}
     appliance: 5
+  - sprite: {fileID: 21300000, guid: f9aba1321dd4a2d479e547354dbd9e23, type: 3}
+    appliance: 1
   fishSpriteList:
   - sprite: {fileID: 21300000, guid: 32f2522231e68cf4a9f8ac4dab79e7f5, type: 3}
     state: 0
@@ -321,6 +326,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &5351895257305205906
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059557055006041195}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: abc4f578014e3e74587e0eb5a5277fcb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8662405847968482843
 GameObject:
   m_ObjectHideFlags: 0
