@@ -5,18 +5,18 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class TileData {
-    
+
     protected FishData.FishState? _Fish;
-    protected int _isProcessing  = 0;
-    protected int ProcessingDuration  = 1;
-    public Direction direction { get; protected set;} = Direction.LEFT ;
-    
-    public FishData.FishState? fish {get { return _Fish;}}
+    protected int _isProcessing = 0;
+    protected int ProcessingDuration = 1;
+    public Direction direction { get; protected set; } = Direction.LEFT;
+
+    public FishData.FishState? fish { get { return _Fish; } }
 
     public Vector2 _position;
 
     static public int Cost = 0;
-    public string id {get {return $"{Appliance} ({_position})";}}
+    public string id { get { return $"{Appliance} ({_position})"; } }
     virtual public void WantToTake(out Vector2? direction) {
 
         direction = null;
@@ -31,11 +31,11 @@ public class TileData {
         get { return _isProcessing; }
     }
 
-    public bool hasFish { get{ return _Fish!=  null; } }
+    public bool hasFish { get { return _Fish != null; } }
 
     public bool CanGive { get { return hasFish && !isBusy; } }
 
-    virtual public bool CanReceive { get {  return Interacable && !hasFish && !isBusy; } }
+    virtual public bool CanReceive { get { return Interacable && !hasFish && !isBusy; } }
 
 
     public TileData(Appliances appliance, Vector2 position) {
@@ -65,15 +65,15 @@ public class TileData {
     }
 
     public override string ToString() {
-        return Appliance.ToString();
+        return $"{Appliance} ({_position})";
     }
 
-    virtual public void ReceiveFish(FishData.FishState fish){
+    virtual public void ReceiveFish(FishData.FishState fish) {
         _isProcessing = ProcessingDuration;
         _Fish = fish;
     }
     virtual public FishData.FishState PushFish() {
-        if(!hasFish){
+        if (!hasFish) {
             throw new System.Exception($"{Appliance} at {_position} Tried to give a fish they dont have");
         }
         FishData.FishState fish = _Fish.Value;
@@ -82,7 +82,7 @@ public class TileData {
     }
 
     virtual public bool doProcess() {
-        if(isBusy){
+        if (isBusy) {
             _isProcessing -= 1;
         }
         return isBusy;
