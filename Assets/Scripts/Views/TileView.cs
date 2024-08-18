@@ -10,9 +10,9 @@ public class TileView: MonoBehaviour {
     public SpriteRenderer ApplianceRenderer;
     public SpriteRenderer FishRenderer;
     [SerializeField] private GameObject _highlight;
-    
-    public applianceSprite[] applianceSpriteList;
-    public fishSprite[] fishSpriteList;
+
+    public ApplianceSprite[] applianceSpriteList;
+    public FishSprite[] fishSpriteList;
 
     public void Init(bool isOffset) {
         Renderer.color = isOffset ? _offsetColor : _baseColor;
@@ -28,17 +28,17 @@ public class TileView: MonoBehaviour {
     private void OnMouseUpAsButton() {
         // send click event to game controller
     }
-        
-    [Serializable]
-     public class applianceSprite {
 
-       public Sprite sprite;
-       public  TileData.Appliances appliance;
+    [Serializable]
+    public class ApplianceSprite {
+
+        public Sprite sprite;
+        public TileData.Appliances appliance;
     }
     [Serializable]
-     public class fishSprite {
+    public class FishSprite {
 
-       public Sprite sprite;
-       public  FishData.FishState state;
+        public Sprite sprite;
+        public FishData.FishState state;
     }
 }

@@ -18,6 +18,8 @@ public class GameController: MonoBehaviour {
     public int CurrentCoins { get { return _currentCoins; } set { _currentCoins = value; Debug.Log($"!@# Setting coins to: {value} "); } }
     [SerializeField] private TextMeshProUGUI[] _coinTexts;
 
+    private TileData.Appliances _applianceInHand;
+
     const int FISH_COIN_VALUE = 1;
 
     private bool gameStarted = false;
@@ -78,7 +80,7 @@ public class GameController: MonoBehaviour {
     }
     private void UpdateApplianceViews(TileData appliance, Vector2 pos) {
         TileView view = CurrentBoardView[pos];
-        TileView.applianceSprite relevantSprite = Array.Find(view.applianceSpriteList, (t) => {
+        TileView.ApplianceSprite relevantSprite = Array.Find(view.applianceSpriteList, (t) => {
             return t.appliance == appliance.Appliance;
         });
         if (relevantSprite != null) {
@@ -93,7 +95,7 @@ public class GameController: MonoBehaviour {
             view.FishRenderer.sprite = null;
             return;
         }
-        TileView.fishSprite relevantSprite = Array.Find(view.fishSpriteList, (t) => {
+        TileView.FishSprite relevantSprite = Array.Find(view.fishSpriteList, (t) => {
             return t.state == FishData.FishState.none;
         });
         if (relevantSprite != null) {
@@ -151,7 +153,7 @@ public class GameController: MonoBehaviour {
             for (int y = 0; y < width; y++) {
                 Vector2 pos = new Vector2(x, y);
                 TileData cur = CurrentBoardData[pos];
-                cur.clearProcess();
+                cur.ClearProcess();
                 if (!cur.Interacable) {
                     continue;
                 }
