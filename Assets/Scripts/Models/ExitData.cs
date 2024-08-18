@@ -19,6 +19,6 @@ public class ExitData: TileData {
     public override void ReceiveFish(FishData.FishState fish) {
         Debug.Log($"!@# ExitData RecievedFish");
         if (fish == FishData.FishState.packed) ESellFish();
-        _Fish = FishData.FishState.none;
+        _Fish = null;
     }
 }
