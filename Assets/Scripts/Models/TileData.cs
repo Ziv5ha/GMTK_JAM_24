@@ -9,7 +9,7 @@ public class TileData {
     protected FishData.FishState? _Fish;
     protected int _isProcessing = 0;
     protected int ProcessingDuration = 1;
-    public Direction direction { get; protected set; } = Direction.LEFT;
+    public Direction direction { get; set; } = Direction.LEFT;
 
     public FishData.FishState? fish { get { return _Fish; } }
 

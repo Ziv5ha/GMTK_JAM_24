@@ -18,6 +18,7 @@ public class TileView: MonoBehaviour {
     public fishSprite[] fishSpriteList;
 
     public Action<Vector2> ETileClicked;
+    public Action<Vector2> ETileRightClicked;
 
     public void Init(bool isOffset) {
         Renderer.color = isOffset ? _offsetColor : _baseColor;
@@ -30,11 +31,12 @@ public class TileView: MonoBehaviour {
     void OnMouseExit() {
         _highlight.SetActive(false);
     }
-    private void OnMouseUpAsButton() {
-        ETileClicked(Pos);
+    private void OnMouseOver() {
+        if (Input.GetMouseButtonDown(0)) ETileClicked(Pos);
+        if (Input.GetMouseButtonDown(1)) ETileRightClicked(Pos);
     }
 
-    public  void UpdateFish(FishData.FishState? fish){
+    public void UpdateFish(FishData.FishState? fish) {
         if (fish is null) {
             FishRenderer.sprite = null;
             return;
@@ -47,8 +49,26 @@ public class TileView: MonoBehaviour {
             FishRenderer.sprite = relevantSprite.sprite;
         }
 
-    } 
-        
+    }
+    public void RotateAppliance(Direction d) {
+        switch (d) {
+            case Direction.UP:
+            case Direction.DOWN:
+                ApplianceRenderer.flipX = d == Direction.UP;
+                ApplianceRenderer.flipY = d == Direction.UP;
+                ApplianceRenderer.transform.rotation = Quaternion.Euler(0, 0, 90);
+                break;
+            case Direction.RIGHT:
+            case Direction.LEFT:
+                ApplianceRenderer.flipX = d == Direction.LEFT;
+                ApplianceRenderer.flipY = false;
+                ApplianceRenderer.transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            default:
+                break;
+        }
+    }
+
 
     [Serializable]
     public class applianceSprite {
