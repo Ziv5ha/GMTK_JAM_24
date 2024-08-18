@@ -14,11 +14,7 @@ public class GameController: MonoBehaviour {
     private Dictionary<Vector2, TileView> CurrentBoardView;
     [SerializeField] private GameObject _gameView;
 
-    private int _currentCoins = 999;
-    public int CurrentCoins { get { return _currentCoins; } set { _currentCoins = value; Debug.Log($"!@# Setting coins to: {value} "); } }
-    [SerializeField] private TextMeshProUGUI[] _coinTexts;
-
-    const int FISH_COIN_VALUE = 1;
+    public TileData.Appliances? ApplianceInHand;
 
     private bool gameStarted = false;
     private float timer = 0;
@@ -27,11 +23,11 @@ public class GameController: MonoBehaviour {
     private int height = 0;
 
     public void Init() {
-        UpdateCoinText();
+
     }
 
     public void CreateBoard() {
-        
+
         width = UnityEngine.Random.Range(4, 10);
         height = UnityEngine.Random.Range(4, 10);
 
@@ -44,6 +40,8 @@ public class GameController: MonoBehaviour {
                 TileView spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);
                 spawnedTile.transform.parent = _gameView.transform;
                 spawnedTile.name = $"Tile {x} {y}";
+                spawnedTile.Pos = new Vector2(x, y);
+                spawnedTile.ETileClicked += TileClicked;
 
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnedTile.Init(isOffset);
@@ -54,16 +52,14 @@ public class GameController: MonoBehaviour {
             }
         }
         PlaceExit(width, height);
-        
-        PlaceAppliance(new FishBinData(new Vector2(0,2)));
-        PlaceAppliance(new ConveyorData(new Vector2(1,2)));
-        PlaceAppliance(new ScalerData(new Vector2(2,2)));
-        PlaceAppliance(new ConveyorData(new Vector2(3,2)));
+
+        PlaceAppliance(new FishBinData(new Vector2(0, 2)));
+        PlaceAppliance(new ConveyorData(new Vector2(1, 2)));
+        PlaceAppliance(new ScalerData(new Vector2(2, 2)));
+        PlaceAppliance(new ConveyorData(new Vector2(3, 2)));
 
         _cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
         gameStarted = true;
-
-        // PrintBoard(CurrentBoard);
     }
 
     private void PlaceExit(int width, int height) {
@@ -88,7 +84,7 @@ public class GameController: MonoBehaviour {
         }
     }
 
-    private void updateFishPosition(bool hasFish, Vector2 pos) {
+    private void UpdateFishPosition(bool hasFish, Vector2 pos) {
         TileView view = CurrentBoardView[pos];
         if (!hasFish) {
             view.FishRenderer.sprite = null;
@@ -102,38 +98,41 @@ public class GameController: MonoBehaviour {
         }
     }
 
-    private void PrintBoard(List<List<TileData>> Board) {
-        string boardString = "\n";
-        for (int i = 0; i < Board.Count; i++) {
-            string layerString = "|";
-            for (int j = 0; j < Board[i].Count; j++) {
-                layerString += $"{Board[i][j].ToShortString()}|";
-            }
-            layerString += "\n";
-            boardString += layerString;
+    private void TileClicked(Vector2 pos) {
+        TileData tile = CurrentBoardData[pos];
+
+        Debug.Log($"!@# Tile {pos} Clicked! and It's a {tile}");
+
+        switch (tile.Appliance) {
+            case TileData.Appliances.empty:
+                if (ApplianceInHand != null) {
+                    CurrentBoardData[pos] = TileDataFactory(ApplianceInHand.Value, pos);
+                }
+                break;
+            case TileData.Appliances.butcher:
+            case TileData.Appliances.conveyor:
+            case TileData.Appliances.packer:
+            case TileData.Appliances.supplies:
+                ApplianceInHand = tile.Appliance;
+                break;
+            case TileData.Appliances.exit:
+            default:
+                break;
         }
-        Debug.Log($"Current Board! Width:{Board[0].Count}, height:{Board.Count}");
-        Debug.Log($"{boardString}");
     }
 
-    public void SellFish() {
-        CurrentCoins += FISH_COIN_VALUE;
-        UpdateCoinText();
-    }
-
-    public bool TryBuyAppliances(TileData.Appliances appliance) {
-        //if (CurrentCoins < appliance.Cost) return false;
-
-        //CurrentCoins -= appliance.Cost;
-        CurrentCoins -= 10;
-        // TODO put appliance in "hand"
-        UpdateCoinText();
-        return true;
-    }
-    public void UpdateCoinText() {
-        Debug.Log($"!@# Updating Coin Texts, CurrentText: {CurrentCoins}");
-        foreach (var coinText in _coinTexts) {
-            coinText.text = CurrentCoins.ToString();
+    public TileData TileDataFactory(TileData.Appliances appliance, Vector2 pos) {
+        switch (ApplianceInHand) {
+            case TileData.Appliances.supplies:
+                return new FishBinData(pos);
+            case TileData.Appliances.conveyor:
+                return new ConveyorData(pos);
+            case TileData.Appliances.butcher:
+                return new ScalerData(pos);
+            case TileData.Appliances.packer:
+                return new PackerData(pos);
+            default:
+                return new TileData(appliance, pos);
         }
     }
 
@@ -153,21 +152,19 @@ public class GameController: MonoBehaviour {
                 Vector2 pos = new Vector2(x, y);
                 TileData cur = CurrentBoardData[pos];
 
-                if(!cur.Interacable){
+                if (!cur.Interacable) {
                     continue;
                 }
 
-                if(cur.doProcess()){
-                    Debug.Log($"in round {round}, ${cur.Appliance} was proccessing ({cur.processingLeft})");
+                if (cur.doProcess()) {
                     continue;
                 };
                 cur.WantToPush(out Vector2? givePos);
-                
-                if(givePos.HasValue)
-                {
+
+                if (givePos.HasValue) {
                     Vector2 giveTargetPos = givePos.Value;
                     TileData giveTarget = CurrentBoardData[giveTargetPos];
-                    AttemptFishTransaction(cur, giveTarget,"push");
+                    AttemptFishTransaction(cur, giveTarget, "push");
                     // continue;
                 }
                 cur.WantToTake(out Vector2? takePos);
@@ -175,30 +172,27 @@ public class GameController: MonoBehaviour {
 
                     Vector2 takeTargetPos = takePos.Value;
                     TileData takeTarget = CurrentBoardData[takeTargetPos];
-                    AttemptFishTransaction(takeTarget, cur,"pull");
+                    AttemptFishTransaction(takeTarget, cur, "pull");
                 }
-               
-                
+
+
             }
-        }    
-    }
-
-    private void AttemptFishTransaction( TileData giver,  TileData receiver,string action)
-    {
-        if (giver.CanGive && receiver.CanReceive)
-        {
-
-            receiver.ReceiveFish();
-            updateFishPosition(true, receiver._position);
-            giver.PushFish();
-            updateFishPosition(false, giver._position);
-
-            Debug.Log($"In Round {round} {giver.Appliance} GAVE A FISH to {receiver.Appliance} ({action})");
         }
     }
 
-    public class TileMap{
-    public TileData tileData;
-    public TileView tileView;
-}
+    private void AttemptFishTransaction(TileData giver, TileData receiver, string action) {
+        if (giver.CanGive && receiver.CanReceive) {
+
+            receiver.ReceiveFish();
+            UpdateFishPosition(true, receiver._position);
+            giver.PushFish();
+            UpdateFishPosition(false, giver._position);
+
+        }
+    }
+
+    public class TileMap {
+        public TileData tileData;
+        public TileView tileView;
+    }
 }

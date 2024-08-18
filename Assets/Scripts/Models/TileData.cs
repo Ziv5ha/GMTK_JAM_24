@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class TileData {
-    
+
     protected bool _hasFish = false;
-    protected int _isProcessing  = 0;
-    protected int ProcessingDuration  = 1;
-    public Direction direction { get; protected set;} = Direction.LEFT ;
+    protected int _isProcessing = 0;
+    protected int ProcessingDuration = 1;
+    public Direction direction { get; protected set; } = Direction.LEFT;
 
     public Vector2 _position;
 
@@ -22,11 +22,11 @@ public class TileData {
     virtual public void WantToPush(out Vector2? direction) {
         direction = null;
     }
-    public bool isBusy{
-        get{return _isProcessing>0;}
+    public bool isBusy {
+        get { return _isProcessing > 0; }
     }
-    public int processingLeft{
-        get{return _isProcessing;}
+    public int processingLeft {
+        get { return _isProcessing; }
     }
 
     public bool CanGive { get { return _hasFish && !isBusy; } }
@@ -34,9 +34,12 @@ public class TileData {
     virtual public bool CanReceive { get { return Interacable && !_hasFish && !isBusy; } }
 
 
-    public TileData(Appliances appliance,Vector2 position){
+    public TileData(Appliances appliance, Vector2 position) {
         _position = position;
         Appliance = appliance;
+    }
+
+    public TileData(Appliances? applianceInHand, Vector2 pos) {
     }
 
     public string ToShortString() {
@@ -61,7 +64,7 @@ public class TileData {
         return Appliance.ToString();
     }
 
-    virtual public void ReceiveFish(){
+    virtual public void ReceiveFish() {
         _isProcessing = ProcessingDuration;
         _hasFish = true;
     }
@@ -69,8 +72,8 @@ public class TileData {
         _hasFish = false;
     }
 
-    public bool doProcess(){
-        if(isBusy){
+    public bool doProcess() {
+        if (isBusy) {
             _isProcessing -= 1;
         }
         return isBusy;

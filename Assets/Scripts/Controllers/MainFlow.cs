@@ -7,6 +7,7 @@ public class MainFlow: MonoBehaviour {
     [SerializeField] private MenuManager MenuManagerRef;
     [SerializeField] private GameView GameViewRef;
     [SerializeField] private GameController GameControllerRef;
+    [SerializeField] private ShopController ShopControllerRef;
 
     private void Start() {
         InitAll();
@@ -15,6 +16,7 @@ public class MainFlow: MonoBehaviour {
     public void InitAll() {
         GameControllerRef.Init();
         MenuManagerRef.Init();
+        ShopControllerRef.Init();
     }
 
     public void StartGame() {
@@ -24,7 +26,7 @@ public class MainFlow: MonoBehaviour {
     }
 
     public void BuyAppliance(TileData.Appliances Appliance) {
-        if (GameControllerRef.TryBuyAppliances(Appliance)) {
+        if (ShopControllerRef.TryBuyAppliances(Appliance)) {
             MenuManagerRef.CloseAll();
         }
     }
