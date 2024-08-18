@@ -22,11 +22,11 @@ public class TileData {
     virtual public void WantToPush(out Vector2? direction) {
         direction = null;
     }
-    public bool isBusy{
-        get{return _isProcessing>0;}
+    public bool isBusy {
+        get { return _isProcessing > 0; }
     }
-    public int processingLeft{
-        get{return _isProcessing;}
+    public int processingLeft {
+        get { return _isProcessing; }
     }
 
     public bool hasFish { get{ return _Fish!=  null; } }
@@ -36,9 +36,12 @@ public class TileData {
     virtual public bool CanReceive { get {  return Interacable && !hasFish && !isBusy; } }
 
 
-    public TileData(Appliances appliance,Vector2 position){
+    public TileData(Appliances appliance, Vector2 position) {
         _position = position;
         Appliance = appliance;
+    }
+
+    public TileData(Appliances? applianceInHand, Vector2 pos) {
     }
 
     public string ToShortString() {
@@ -76,8 +79,8 @@ public class TileData {
         return fish;
     }
 
-    public bool doProcess(){
-        if(isBusy){
+    public bool doProcess() {
+        if (isBusy) {
             _isProcessing -= 1;
         }
         return isBusy;
