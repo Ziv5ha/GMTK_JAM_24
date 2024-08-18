@@ -11,13 +11,13 @@ public class ConveyorData: TileData {
 
 
     public void SetDirection(Direction direction) {
-        this.Direction = direction;
+        this.direction = direction; 
     }
     public override void WantToTake(out Vector2? direction) {
 
-        direction = this.CanReceive ? _position + TileData.DirectionToVector(this.Direction) : null;
+        direction = this.CanReceive ? _position + TileData.DirectionToVector(this.direction) : null;
     }
     public override void WantToPush(out Vector2? direction) {
-        direction = this.CanGive ? _position - TileData.DirectionToVector(this.Direction) : null;
+        direction = this.CanGive ? _position - TileData.DirectionToVector(this.direction) : null;
     }
 }
