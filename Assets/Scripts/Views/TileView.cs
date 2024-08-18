@@ -33,6 +33,22 @@ public class TileView: MonoBehaviour {
         ETileClicked(Pos);
     }
 
+    public  void UpdateFish(FishData.FishState? fish){
+        if (fish is null) {
+            FishRenderer.sprite = null;
+            return;
+        }
+
+        fishSprite relevantSprite = Array.Find(fishSpriteList, (t) => {
+            return t.state == fish;
+        });
+        if (relevantSprite != null) {
+            FishRenderer.sprite = relevantSprite.sprite;
+        }
+
+    } 
+        
+
     [Serializable]
     public class applianceSprite {
 

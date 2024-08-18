@@ -84,18 +84,10 @@ public class GameController: MonoBehaviour {
         }
     }
 
-    private void UpdateFishPosition(bool hasFish, Vector2 pos) {
-        TileView view = CurrentBoardView[pos];
-        if (!hasFish) {
-            view.FishRenderer.sprite = null;
-            return;
-        }
-        TileView.fishSprite relevantSprite = Array.Find(view.fishSpriteList, (t) => {
-            return t.state == FishData.FishState.none;
-        });
-        if (relevantSprite != null) {
-            view.FishRenderer.sprite = relevantSprite.sprite;
-        }
+    private void UpdateFishView(TileData app) {
+
+        TileView view = CurrentBoardView[app._position];
+        view.UpdateFish(app.fish);
     }
 
     private void TileClicked(Vector2 pos) {
@@ -159,7 +151,8 @@ public class GameController: MonoBehaviour {
                 if (cur.doProcess()) {
                     continue;
                 };
-
+                UpdateFishView(cur);
+                
                 cur.WantToPush(out Vector2? givePos);
 
                 if (givePos.HasValue) {
@@ -193,8 +186,8 @@ public class GameController: MonoBehaviour {
         if (giver.CanGive && receiver.CanReceive)
         {
             receiver.ReceiveFish(giver.PushFish());
-            UpdateFishPosition(true, receiver._position);
-            UpdateFishPosition(false, giver._position);
+            UpdateFishView(receiver);
+            UpdateFishView(giver);
 
             // Debug.Log($"In Round {round} {giver.Appliance} GAVE A FISH to {receiver.Appliance} ({action})");
         }

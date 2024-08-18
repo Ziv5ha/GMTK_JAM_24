@@ -15,8 +15,4 @@ public class ExitData : TileData
     {
         direction = TileData.DirectionToVector(this.direction);    
     }
-    public override void ReceiveFish()
-    {
-        
-    }
 }

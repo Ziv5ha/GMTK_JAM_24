@@ -10,6 +10,8 @@ public class TileData {
     protected int _isProcessing  = 0;
     protected int ProcessingDuration  = 1;
     public Direction direction { get; protected set;} = Direction.LEFT ;
+    
+    public FishData.FishState? fish {get { return _Fish;}}
 
     public Vector2 _position;
 
@@ -79,8 +81,8 @@ public class TileData {
         return fish;
     }
 
-    public bool doProcess() {
-        if (isBusy) {
+    virtual public bool doProcess() {
+        if(isBusy){
             _isProcessing -= 1;
         }
         return isBusy;
