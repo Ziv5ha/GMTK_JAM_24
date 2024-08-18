@@ -7,7 +7,7 @@ public class ConveyorData: TileData {
     public ConveyorData(Vector2 position) : base(Appliances.conveyor, position) { }
     public new int Cost = 5;
 
-    public override bool CanReceive { get { return !hasFish; } }
+    public override bool CanReceive { get { return !HasFish; } }
 
 
     public void SetDirection(Direction direction) {

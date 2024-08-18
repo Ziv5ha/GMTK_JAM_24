@@ -33,9 +33,9 @@ public class TileData {
 
     public bool HasFish { get { return _Fish != null; } }
 
-    virtual public bool CanGive { get { return hasFish && !isBusy; } }
+    virtual public bool CanGive { get { return HasFish && !isBusy; } }
 
-    virtual public bool CanReceive { get { return Interacable && !hasFish && !isBusy; } }
+    virtual public bool CanReceive { get { return Interacable && !HasFish && !isBusy; } }
 
 
     public TileData(Appliances appliance, Vector2 position) {
@@ -73,7 +73,7 @@ public class TileData {
         _Fish = fish;
     }
     virtual public FishData.FishState PushFish() {
-        if (!hasFish) {
+        if (!HasFish) {
             throw new System.Exception($"{Appliance} at {_position} Tried to give a fish they dont have");
         }
         FishData.FishState fish = _Fish.Value;
