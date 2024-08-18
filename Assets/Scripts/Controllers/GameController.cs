@@ -69,8 +69,10 @@ public class GameController: MonoBehaviour {
         PlaceAppliance(new ExitData(direction, new Vector2(xPos, yPos)));
     }
     private void PlaceAppliance(TileData appliance) {
+        Debug.Log($"!@# PlaceAppliance: {appliance}");
         Vector2 pos = appliance._position;
         CurrentBoardData[pos] = appliance;
+        Debug.Log($"!@# CurrentBoardData[pos]: {CurrentBoardData[pos]}");
         UpdateApplianceViews(appliance, pos);
     }
     private void UpdateApplianceViews(TileData appliance, Vector2 pos) {
@@ -78,6 +80,7 @@ public class GameController: MonoBehaviour {
         TileView.applianceSprite relevantSprite = Array.Find(view.applianceSpriteList, (t) => {
             return t.appliance == appliance.Appliance;
         });
+        Debug.Log($"!@# found relevantSprite: {relevantSprite != null}");
         if (relevantSprite != null) {
             view.ApplianceRenderer.sprite = relevantSprite.sprite;
             view.ApplianceRenderer.flipX = appliance.direction == Direction.RIGHT;
@@ -98,7 +101,8 @@ public class GameController: MonoBehaviour {
         switch (tile.Appliance) {
             case TileData.Appliances.empty:
                 if (ApplianceInHand != null) {
-                    CurrentBoardData[pos] = TileDataFactory(ApplianceInHand.Value, pos);
+                    PlaceAppliance(TileDataFactory(ApplianceInHand.Value, pos));
+                    ApplianceInHand = null;
                 }
                 break;
             case TileData.Appliances.butcher:
@@ -106,6 +110,7 @@ public class GameController: MonoBehaviour {
             case TileData.Appliances.packer:
             case TileData.Appliances.supplies:
                 ApplianceInHand = tile.Appliance;
+                PlaceAppliance(TileDataFactory(TileData.Appliances.empty, pos));
                 break;
             case TileData.Appliances.exit:
             default:
@@ -114,7 +119,7 @@ public class GameController: MonoBehaviour {
     }
 
     public TileData TileDataFactory(TileData.Appliances appliance, Vector2 pos) {
-        switch (ApplianceInHand) {
+        switch (appliance) {
             case TileData.Appliances.supplies:
                 return new FishBinData(pos);
             case TileData.Appliances.conveyor:
@@ -152,7 +157,7 @@ public class GameController: MonoBehaviour {
                     continue;
                 };
                 UpdateFishView(cur);
-                
+
                 cur.WantToPush(out Vector2? givePos);
 
                 if (givePos.HasValue) {
@@ -161,7 +166,7 @@ public class GameController: MonoBehaviour {
                     AttemptFishTransaction(cur, giveTarget, "push");
                     // continue;
                 }
-                
+
 
                 cur.WantToTake(out Vector2? takePos);
                 if (takePos.HasValue) {
@@ -173,18 +178,16 @@ public class GameController: MonoBehaviour {
 
 
             }
-        }    
-    }
-
-    void test (TileData cur,string message){
-        if(cur.Appliance == TileData.Appliances.conveyor){
-            Debug.Log($"round {round} - "+message);
         }
     }
-    private void AttemptFishTransaction( TileData giver,  TileData receiver,string action)
-    {
-        if (giver.CanGive && receiver.CanReceive)
-        {
+
+    void test(TileData cur, string message) {
+        if (cur.Appliance == TileData.Appliances.conveyor) {
+            Debug.Log($"round {round} - " + message);
+        }
+    }
+    private void AttemptFishTransaction(TileData giver, TileData receiver, string action) {
+        if (giver.CanGive && receiver.CanReceive) {
             receiver.ReceiveFish(giver.PushFish());
             UpdateFishView(receiver);
             UpdateFishView(giver);
