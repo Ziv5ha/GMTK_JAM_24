@@ -31,9 +31,9 @@ public class TileData {
         get { return _isProcessing; }
     }
 
-    public bool hasFish { get{ return _Fish!=  null; } }
+    virtual public bool hasFish { get{ return _Fish!=  null; } }
 
-    public bool CanGive { get { return hasFish && !isBusy; } }
+    virtual public bool CanGive { get { return hasFish && !isBusy; } }
 
     virtual public bool CanReceive { get {  return Interacable && !hasFish && !isBusy; } }
 

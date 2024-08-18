@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class FishBinData: TileData {
     public FishBinData(Vector2 position) : base(Appliances.supplies, position) {
-        _Fish = FishData.FishState.none;
     }
+    
     public new int Cost = 10;
+    override public bool CanGive { get { return true;} }
+
     public override FishData.FishState PushFish() {
         return FishData.FishState.none;
     }
