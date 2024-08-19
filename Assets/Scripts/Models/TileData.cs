@@ -35,7 +35,7 @@ public class TileData {
 
     virtual public bool CanGive { get { return HasFish && !isBusy; } }
 
-    virtual public bool CanReceive { get { return Interacable && !HasFish && !isBusy; } }
+    virtual public bool CanReceive (FishData.FishState? fish){ return Interacable && !HasFish && !isBusy;  }
 
 
     public TileData(Appliances appliance, Vector2 position) {

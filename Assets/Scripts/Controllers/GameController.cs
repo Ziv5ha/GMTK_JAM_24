@@ -32,8 +32,8 @@ public class GameController: MonoBehaviour {
 
     public void CreateBoard() {
 
-        width = UnityEngine.Random.Range(5, 10);
-        height = UnityEngine.Random.Range(5, 10);
+        width = UnityEngine.Random.Range(6, 10);
+        height = UnityEngine.Random.Range(6, 10);
 
         CurrentBoardData = new Dictionary<Vector2, TileData>();
         CurrentBoardView = new Dictionary<Vector2, TileView>();
@@ -56,12 +56,15 @@ public class GameController: MonoBehaviour {
                 CurrentBoardView[position] = spawnedTile;
             }
         }
-        PlaceExit(width, height);
+        // PlaceExit(width, height);
 
         PlaceAppliance(new FishBinData(new Vector2(0, 2)));
         PlaceAppliance(new ConveyorData(new Vector2(1, 2)));
         PlaceAppliance(new ScalerData(new Vector2(2, 2)));
         PlaceAppliance(new ConveyorData(new Vector2(3, 2)));
+        PlaceAppliance(new PackerData(new Vector2(4, 2)));
+        PlaceAppliance(new ExitData(Direction.LEFT,new Vector2(5, 2)));
+        // PlaceExit(width, height);
 
         _cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
         gameStarted = true;
@@ -197,6 +200,9 @@ public class GameController: MonoBehaviour {
 
     private void TryPull(TileData cur) {
         cur.WantToTake(out Vector2? takePos);
+        if(cur.Appliance == TileData.Appliances.Exit){
+            Debug.Log($"ddd {takePos}");
+        }
         if (takePos.HasValue) {
 
             Vector2 takeTargetPos = takePos.Value;
@@ -213,7 +219,8 @@ public class GameController: MonoBehaviour {
         }
     }
     private void AttemptFishTransaction(TileData giver, TileData receiver, string action) {
-        if (giver.CanGive && receiver.CanReceive) {
+        
+        if (giver.CanGive && receiver.CanReceive(giver.fish)) {
             receiver.ReceiveFish(giver.PushFish());
             UpdateFishView(receiver);
             UpdateFishView(giver);

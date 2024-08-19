@@ -8,16 +8,19 @@ public class ScalerData : TileData
     public ScalerData(Vector2 position) : base(Appliances.Scaler,position){
         ProcessingDuration  = 3;
     }
+    public override bool CanReceive (FishData.FishState? fish){  return fish == FishData.FishState.none && base.CanReceive(fish); }
+
+
     public override bool doProcess(){
-        if(_Fish==FishData.FishState.none){
+            if(!HasFish){
+                _isProcessing = 0;
+                return isBusy;
+            }
             bool busy =  base.doProcess();
             if(!busy){
                 _Fish = FishData.FishState.clean;
             }
             return busy;
-        }
-        _isProcessing = 0;
-        return isBusy;
     }
     public new int Cost = 10;
 }
