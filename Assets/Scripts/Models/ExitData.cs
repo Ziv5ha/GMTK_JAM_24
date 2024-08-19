@@ -17,8 +17,7 @@ public class ExitData: TileData {
         return true;
     }
 
-    public override bool CanReceive(FishData.FishState? fish)
-    {
+    public override bool CanReceive(FishData.FishState? fish) {
         return fish == FishData.FishState.packed;
     }
     public override void ReceiveFish(FishData.FishState fish) {

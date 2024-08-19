@@ -7,8 +7,7 @@ using UnityEngine.UI;
 
 
 
-public class RentController : MonoBehaviour
-{
+public class RentController: MonoBehaviour {
     private int _baseRent = 20;
     private int _rentTime = 5;
     [SerializeField] private Slider RentbarSlider;
@@ -19,41 +18,42 @@ public class RentController : MonoBehaviour
     private float lerpTime = GameConstants.RoundDuration;
     private bool gameStarted = false;
 
-      public void StartGame() {
+    public void StartGame() {
         gameStarted = true;
     }
 
 
     private void Update() {
-        if(!gameStarted){
+        if (!gameStarted) {
             return;
         }
-        
-        RentbarSlider.value = nextVal == 1 ? 1 : Mathf.Lerp(curVal,nextVal,lerpTime);
-        
-        if(lerpTime<GameConstants.RoundDuration){
-            lerpTime+=Time.deltaTime;
+
+        RentbarSlider.value = nextVal == 1 ? 1 : Mathf.Lerp(curVal, nextVal, lerpTime);
+
+        if (lerpTime < GameConstants.RoundDuration) {
+            lerpTime += Time.deltaTime;
         }
-        
+
     }
 
-    private void DoLerp(float target){
-        curVal = RentbarSlider.value ;
-        nextVal =target ;
+    private void DoLerp(float target) {
+        curVal = RentbarSlider.value;
+        nextVal = target;
         lerpTime = 0;
     }
 
-    public  void UpdateRentBar(int round){
-        if(nextVal == 0f){
+    public void UpdateRentBar(int round) {
+        if (nextVal == 0f) {
             ShopControllerRef.PayRent(_baseRent);
         }
-        float remainder = round % (_rentTime+1);
+        //float remainder = round % (_rentTime + 1);
+        //float frac = (_rentTime - remainder) / _rentTime;
 
-        float frac =  ( _rentTime - remainder) / _rentTime;
-        
-        
+        //float remainder = round % (_rentTime + 1);
+        float frac = GameConstants.CurrentFishInStorage / GameConstants.StorageCapacity;
+
         DoLerp(frac);
-        
+
 
 
     }
