@@ -6,7 +6,7 @@ using UnityEngine;
 public class ShopController: MonoBehaviour {
 
 
-    private int _currentCoins = 999;
+    private int _currentCoins = 0;
     public int CurrentCoins { get { return _currentCoins; } set { _currentCoins = value; UpdateCoinText(); } }
     private Dictionary<TileData.Appliances, int> _applianceCosts;
     [SerializeField] private TextMeshProUGUI[] _coinTexts;
@@ -44,8 +44,12 @@ public class ShopController: MonoBehaviour {
     }
     private void UpdateCoinText() {
         // Debug.Log($"!@# Updating Coin Texts, CurrentText: {CurrentCoins}");
+        string CoinString = $"{CurrentCoins}";
+        while (CoinString.Length < 3) {
+            CoinString = $"0{CoinString}";
+        }
         foreach (var coinText in _coinTexts) {
-            coinText.text = CurrentCoins.ToString();
+            coinText.text = CoinString;
         }
     }
 
