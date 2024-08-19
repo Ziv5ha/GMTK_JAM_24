@@ -75,7 +75,7 @@ public class TileView: MonoBehaviour {
         
         appAnimator.enabled = true;
         if(!appAnimator.GetCurrentAnimatorStateInfo(0).IsName(key)){
-            Debug.Log("playing "+ key);
+            // Debug.Log("playing "+ key);
             appAnimator.Play(key);
 
         }

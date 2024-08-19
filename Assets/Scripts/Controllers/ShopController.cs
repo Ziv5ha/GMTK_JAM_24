@@ -41,6 +41,11 @@ public class ShopController: MonoBehaviour {
         UpdateCoinText();
         return true;
     }
+    public void PayRent(int rent) {
+        CurrentCoins -= rent;
+        UpdateCoinText();
+        
+    }
     public void UpdateCoinText() {
         Debug.Log($"!@# Updating Coin Texts, CurrentText: {CurrentCoins}");
         foreach (var coinText in _coinTexts) {

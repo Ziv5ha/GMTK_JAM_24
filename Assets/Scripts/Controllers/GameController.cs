@@ -14,14 +14,16 @@ public class GameController: MonoBehaviour {
     private Dictionary<Vector2, TileView> CurrentBoardView;
     [SerializeField] private GameObject _gameView;
     [SerializeField] private ShopController ShopControllerRef;
+    [SerializeField] private RentController RentControllerRef;
 
     public TileData.Appliances? ApplianceInHand;
 
     private int _totalFishSold = 0;
 
     private bool gameStarted = false;
+    private int round = 0;
     private float timer = 0;
-    private float round = 0;
+    private float roundDuration = 0.5f;
     private int width = 0;
     private int height = 0;
 
@@ -31,7 +33,7 @@ public class GameController: MonoBehaviour {
 
     public void CreateBoard() {
 
-        width = UnityEngine.Random.Range(4, 10);
+        width = UnityEngine.Random.Range(5, 10);
         height = UnityEngine.Random.Range(4, 10);
 
         CurrentBoardData = new Dictionary<Vector2, TileData>();
@@ -72,10 +74,10 @@ public class GameController: MonoBehaviour {
         PlaceAppliance(new ExitData(direction, new Vector2(xPos, yPos)));
     }
     private void PlaceAppliance(TileData appliance) {
-        Debug.Log($"!@# PlaceAppliance: {appliance}");
+        // Debug.Log($"!@# PlaceAppliance: {appliance}");
         Vector2 pos = appliance._position;
         CurrentBoardData[pos] = appliance;
-        Debug.Log($"!@# CurrentBoardData[pos]: {CurrentBoardData[pos]}");
+        // Debug.Log($"!@# CurrentBoardData[pos]: {CurrentBoardData[pos]}");
         UpdateApplianceViews(appliance, pos);
     }
     private void UpdateApplianceViews(TileData appliance, Vector2 pos) {
@@ -83,7 +85,7 @@ public class GameController: MonoBehaviour {
         TileView.applianceSprite relevantSprite = Array.Find(view.applianceSpriteList, (t) => {
             return t.appliance == appliance.Appliance;
         });
-        Debug.Log($"!@# found relevantSprite: {relevantSprite != null}");
+        // Debug.Log($"!@# found relevantSprite: {relevantSprite != null}");
         if (relevantSprite != null) {
             view.ApplianceRenderer.sprite = relevantSprite.sprite;
             view.ApplianceRenderer.flipX = appliance.direction == Direction.RIGHT;
@@ -102,7 +104,7 @@ public class GameController: MonoBehaviour {
     private void TileClicked(Vector2 pos) {
         TileData tile = CurrentBoardData[pos];
 
-        Debug.Log($"!@# Tile {pos} Clicked! and It's a {tile}");
+        // Debug.Log($"!@# Tile {pos} Clicked! and It's a {tile}");
 
         switch (tile.Appliance) {
             case TileData.Appliances.Empty:
@@ -142,7 +144,7 @@ public class GameController: MonoBehaviour {
     public void Update() {
         if (gameStarted) {
             timer += Time.deltaTime;
-            if (timer >= 1.5f) {
+            if (timer >= roundDuration) {
                 round += 1;
                 timer = 0;
                 Advance();
@@ -187,6 +189,7 @@ public class GameController: MonoBehaviour {
 
             }
         }
+        RentControllerRef.UpdateRentBar(round);
     }
 
     void test(TileData cur, string message) {
@@ -227,7 +230,7 @@ public class GameController: MonoBehaviour {
     }
     
     private void RotateApplience(TileData td) {
-        Debug.Log($"!@# Rotating {td}");
+        // Debug.Log($"!@# Rotating {td}");
         td.direction = GetNextDirection(td.direction);
         CurrentBoardView[td._position].RotateAppliance(td.direction);
     }
