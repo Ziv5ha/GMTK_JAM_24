@@ -69,19 +69,18 @@ public class TileView: MonoBehaviour {
         }
     }
 
-    public void UpdateAnim(TileData.Appliances app,bool isBusy){
-        string state = isBusy? "busy" : "idle";
+    public void UpdateAnim(TileData.Appliances app, bool isBusy) {
+        string state = isBusy ? "busy" : "idle";
         string key = $"{app}_{state}";
 
         appAnimator.enabled = true;
-        if(!appAnimator.GetCurrentAnimatorStateInfo(0).IsName(key)){
-            Debug.Log("playing "+ key);
+        if (!appAnimator.GetCurrentAnimatorStateInfo(0).IsName(key)) {
             appAnimator.Play(key);
 
         }
 
-    } 
-        
+    }
+
 
     [Serializable]
     public class applianceSprite {

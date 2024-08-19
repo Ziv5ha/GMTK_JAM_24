@@ -4,10 +4,10 @@ public class GameConstants {
     static public int TotalFishSold = 0;
 
     // Storage
-    static public int CurrentFishInStorage = 100;
-    static public int StorageCapacity = 100;
-    static public int ShipmentTime = 10;
-    static public int ShipmentSize = 5;
+    static public float CurrentFishInStorage = 100;
+    static public float StorageCapacity = 100;
+    static public int ShipmentTime = 5;
+    static public int ShipmentSize = 50;
 
 
     // Process Time
