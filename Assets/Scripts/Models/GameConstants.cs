@@ -1,6 +1,6 @@
 public class GameConstants {
 
-    static public float RoundDuration = 1f;
+    static public float RoundDuration = 0.5f;
     static public int TotalFishSold = 0;
 
     // Storage
@@ -12,7 +12,7 @@ public class GameConstants {
 
     // Process Time
     static public int FishBinProcessTime;
-    static public int ConveyorProcessTime;
-    static public int ScalerProcessTime;
-    static public int packerProcessTime;
+    static public int ConveyorProcessTime = 2;
+    static public int ScalerProcessTime = 3;
+    static public int PackerProcessTime = 3;
 }

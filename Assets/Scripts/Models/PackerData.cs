@@ -5,10 +5,9 @@ using UnityEngine;
 public class PackerData: TileData {
 
     public override bool CanReceive (FishData.FishState? fish){  return fish == FishData.FishState.clean && base.CanReceive(fish); }
+    override protected int ProcessingDuration{ get{return GameConstants.PackerProcessTime;}} 
 
     public PackerData(Vector2 position) : base(Appliances.Packer, position) {
-        ProcessingDuration = 3;
-
     }
     public override bool doProcess(){
             if(!HasFish){

@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class ScalerData : TileData
 {
+    override protected int ProcessingDuration{ get{return GameConstants.ScalerProcessTime;}} 
 
-    public ScalerData(Vector2 position) : base(Appliances.Scaler,position){
-        ProcessingDuration  = 3;
-    }
+    public ScalerData(Vector2 position) : base(Appliances.Scaler,position){}
     public override bool CanReceive (FishData.FishState? fish){  return fish == FishData.FishState.none && base.CanReceive(fish); }
 
 

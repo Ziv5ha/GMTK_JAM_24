@@ -32,8 +32,8 @@ public class GameController: MonoBehaviour {
 
     public void CreateBoard() {
 
-        width = UnityEngine.Random.Range(6, 10);
-        height = UnityEngine.Random.Range(6, 10);
+        width = UnityEngine.Random.Range(7, 10);
+        height = UnityEngine.Random.Range(7, 10);
 
         CurrentBoardData = new Dictionary<Vector2, TileData>();
         CurrentBoardView = new Dictionary<Vector2, TileView>();
@@ -63,7 +63,9 @@ public class GameController: MonoBehaviour {
         PlaceAppliance(new ScalerData(new Vector2(2, 2)));
         PlaceAppliance(new ConveyorData(new Vector2(3, 2)));
         PlaceAppliance(new PackerData(new Vector2(4, 2)));
-        ExitData DebugExitAppliance = new ExitData(Direction.LEFT, new Vector2(5, 2));
+        PlaceAppliance(new ConveyorData(new Vector2(5, 2)));
+
+        ExitData DebugExitAppliance = new ExitData(Direction.LEFT, new Vector2(6, 2));
         DebugExitAppliance.ESellFish += SellFish;
         PlaceAppliance(DebugExitAppliance);
         //PlaceExit(width, height);

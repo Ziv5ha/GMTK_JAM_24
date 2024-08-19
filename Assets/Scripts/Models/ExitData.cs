@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ExitData: TileData {
     public Action ESellFish;
+
+    override protected int ProcessingDuration{ get{return 0;}} 
     public ExitData(Direction direction, Vector2 position) : base(Appliances.Exit, position) {
 
         base.direction = direction;

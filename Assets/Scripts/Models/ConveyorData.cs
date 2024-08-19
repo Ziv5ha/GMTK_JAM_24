@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ConveyorData: TileData {
 
+    override protected int ProcessingDuration{ get{return GameConstants.ConveyorProcessTime;}} 
+
+
     public ConveyorData(Vector2 position) : base(Appliances.Conveyor, position) { }
     public new int Cost = 5;
 
