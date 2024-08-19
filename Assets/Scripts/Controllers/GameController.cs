@@ -14,11 +14,9 @@ public class GameController: MonoBehaviour {
     private Dictionary<Vector2, TileView> CurrentBoardView;
     [SerializeField] private GameObject _gameView;
     [SerializeField] private ShopController ShopControllerRef;
-    [SerializeField] private RentController RentControllerRef;
+    [SerializeField] private StorageController StorageControllerRef;
 
     public TileData.Appliances? ApplianceInHand;
-
-    private int _totalFishSold = 0;
 
     private bool gameStarted = false;
     private int round = 0;
@@ -191,10 +189,10 @@ public class GameController: MonoBehaviour {
 
             }
         }
-        RentControllerRef.UpdateRentBar(round);
+        StorageControllerRef.UpdateStorage(round);
 
         void TryPush(TileData cur) {
-            
+
 
             if (cur.WantToPush(out Vector2? givePos)) {
                 Vector2 giveTargetPos = givePos.Value;
@@ -207,7 +205,7 @@ public class GameController: MonoBehaviour {
     }
 
     private void TryPull(TileData cur) {
-        
+
         if (cur.WantToTake(out Vector2? takePos)) {
             Vector2 takeTargetPos = takePos.Value;
             if (CurrentBoardData.TryGetValue(takeTargetPos, out TileData takeTarget)) {

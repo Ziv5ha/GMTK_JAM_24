@@ -8,7 +8,7 @@ public class MainFlow: MonoBehaviour {
     [SerializeField] private GameView GameViewRef;
     [SerializeField] private GameController GameControllerRef;
     [SerializeField] private ShopController ShopControllerRef;
-    [SerializeField] private RentController rentControllerRef;
+    [SerializeField] private StorageController StorageControllerRef;
 
     private void Start() {
         InitAll();
@@ -18,13 +18,15 @@ public class MainFlow: MonoBehaviour {
         GameControllerRef.Init();
         MenuManagerRef.Init();
         ShopControllerRef.Init();
+
+        StorageControllerRef.EEndGame += EndGame;
     }
 
     public void StartGame() {
         MenuManagerRef.CloseAll();
         GameViewRef.gameObject.SetActive(true);
         GameControllerRef.CreateBoard();
-        rentControllerRef.StartGame();
+        StorageControllerRef.StartGame();
     }
 
     public void EndGame() {
