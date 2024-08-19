@@ -152,43 +152,57 @@ public class GameController: MonoBehaviour {
     }
     private void Advance() {
         for (int x = 0; x < height; x++) {
-            for (int y = 0; y < width; y++) {
+            for (int y = 0; y < width; y++)
+            {
                 Vector2 pos = new Vector2(x, y);
                 TileData cur = CurrentBoardData[pos];
 
-                if (!cur.Interacable) {
+                if (!cur.Interacable)
+                {
                     continue;
                 }
 
                 bool busy = cur.doProcess();
                 UpdateFishView(cur);
-                if (busy) {
+                if (busy)
+                {
                     continue;
                 };
+                TryPush(cur);
 
-
-                cur.WantToPush(out Vector2? givePos);
-
-                if (givePos.HasValue) {
-                    Vector2 giveTargetPos = givePos.Value;
-                    TileData giveTarget = CurrentBoardData[giveTargetPos];
-                    AttemptFishTransaction(cur, giveTarget, "push");
-                    // continue;
-                }
-
-
-                cur.WantToTake(out Vector2? takePos);
-                if (takePos.HasValue) {
-
-                    Vector2 takeTargetPos = takePos.Value;
-                    TileData takeTarget = CurrentBoardData[takeTargetPos];
-                    AttemptFishTransaction(takeTarget, cur, "pull");
-                }
-
+                TryPull(cur);
 
             }
         }
         RentControllerRef.UpdateRentBar(round);
+
+        void TryPush(TileData cur)
+        {
+            cur.WantToPush(out Vector2? givePos);
+
+            if (givePos.HasValue)
+            {
+                Vector2 giveTargetPos = givePos.Value;
+                
+                if(CurrentBoardData.TryGetValue(giveTargetPos,out TileData giveTarget )){
+                   AttemptFishTransaction(cur, giveTarget, "push");
+                }
+            }
+        }
+    }
+
+    private void TryPull(TileData cur)
+    {
+        cur.WantToTake(out Vector2? takePos);
+        if (takePos.HasValue)
+        {
+
+            Vector2 takeTargetPos = takePos.Value;
+            if(CurrentBoardData.TryGetValue(takeTargetPos,out TileData takeTarget)){
+                AttemptFishTransaction(takeTarget, cur, "pull");
+            }
+
+        }
     }
 
     void test(TileData cur, string message) {

@@ -38,7 +38,6 @@ public class RentController : MonoBehaviour
     }
 
     private void DoLerp(float target){
-        Debug.Log($"${target}");
         curVal = RentbarSlider.value ;
         nextVal =target ;
         lerpTime = 0;
