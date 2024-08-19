@@ -46,6 +46,7 @@ public class GameController: MonoBehaviour {
                 spawnedTile.name = $"Tile {x} {y}";
                 spawnedTile.Pos = new Vector2(x, y);
                 spawnedTile.ETileClicked += TileClicked;
+                spawnedTile.ETileRightClicked += TileRightClicked;
 
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnedTile.Init(isOffset);
@@ -70,12 +71,16 @@ public class GameController: MonoBehaviour {
         int xPos = UnityEngine.Random.Range(0, 1) > 1 ? width : 0;
         int yPos = UnityEngine.Random.Range(0, 1) > 1 ? height : 0;
         Direction direction = xPos == 0 ? Direction.RIGHT : Direction.LEFT;
-        PlaceAppliance(new ExitData(direction, new Vector2(xPos, yPos)));
+        ExitData exitAppliance = new ExitData(direction, new Vector2(xPos, yPos));
+        exitAppliance.ESellFish += SellFish;
+        PlaceAppliance(exitAppliance);
     }
     private void PlaceAppliance(TileData appliance) {
         // Debug.Log($"!@# PlaceAppliance: {appliance}");
         Vector2 pos = appliance._position;
         CurrentBoardData[pos] = appliance;
+        CurrentBoardData[pos].fish = null;
+        UpdateFishView(appliance);
         // Debug.Log($"!@# CurrentBoardData[pos]: {CurrentBoardData[pos]}");
         UpdateApplianceViews(appliance, pos);
     }
@@ -95,8 +100,10 @@ public class GameController: MonoBehaviour {
 
         TileView view = CurrentBoardView[app._position];
         view.UpdateFish(app.fish);
-        if(app.Appliance == TileData.Appliances.Scaler||app.Appliance == TileData.Appliances.Exit){
-            view.UpdateAnim(app.Appliance,app.isBusy);    
+        if (app.Appliance == TileData.Appliances.Scaler || app.Appliance == TileData.Appliances.Exit) {
+            view.UpdateAnim(app.Appliance, app.isBusy);
+        } else {
+            view.appAnimator.enabled = false;
         }
     }
 
@@ -152,20 +159,17 @@ public class GameController: MonoBehaviour {
     }
     private void Advance() {
         for (int x = 0; x < height; x++) {
-            for (int y = 0; y < width; y++)
-            {
+            for (int y = 0; y < width; y++) {
                 Vector2 pos = new Vector2(x, y);
                 TileData cur = CurrentBoardData[pos];
 
-                if (!cur.Interacable)
-                {
+                if (!cur.Interacable) {
                     continue;
                 }
 
                 bool busy = cur.doProcess();
                 UpdateFishView(cur);
-                if (busy)
-                {
+                if (busy) {
                     continue;
                 };
                 TryPush(cur);
@@ -176,29 +180,25 @@ public class GameController: MonoBehaviour {
         }
         RentControllerRef.UpdateRentBar(round);
 
-        void TryPush(TileData cur)
-        {
+        void TryPush(TileData cur) {
             cur.WantToPush(out Vector2? givePos);
 
-            if (givePos.HasValue)
-            {
+            if (givePos.HasValue) {
                 Vector2 giveTargetPos = givePos.Value;
-                
-                if(CurrentBoardData.TryGetValue(giveTargetPos,out TileData giveTarget )){
-                   AttemptFishTransaction(cur, giveTarget, "push");
+
+                if (CurrentBoardData.TryGetValue(giveTargetPos, out TileData giveTarget)) {
+                    AttemptFishTransaction(cur, giveTarget, "push");
                 }
             }
         }
     }
 
-    private void TryPull(TileData cur)
-    {
+    private void TryPull(TileData cur) {
         cur.WantToTake(out Vector2? takePos);
-        if (takePos.HasValue)
-        {
+        if (takePos.HasValue) {
 
             Vector2 takeTargetPos = takePos.Value;
-            if(CurrentBoardData.TryGetValue(takeTargetPos,out TileData takeTarget)){
+            if (CurrentBoardData.TryGetValue(takeTargetPos, out TileData takeTarget)) {
                 AttemptFishTransaction(takeTarget, cur, "pull");
             }
 
@@ -241,7 +241,7 @@ public class GameController: MonoBehaviour {
                 break;
         }
     }
-    
+
     private void RotateApplience(TileData td) {
         // Debug.Log($"!@# Rotating {td}");
         td.direction = GetNextDirection(td.direction);

@@ -11,7 +11,7 @@ public class TileData {
     protected int ProcessingDuration = 1;
     public Direction direction { get; set; } = Direction.LEFT;
 
-    public FishData.FishState? fish { get { return _Fish; } }
+    public FishData.FishState? fish { get { return _Fish; } set { _Fish = value; } }
 
     public Vector2 _position;
 
