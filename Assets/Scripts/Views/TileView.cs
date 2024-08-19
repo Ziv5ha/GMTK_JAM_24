@@ -71,6 +71,17 @@ public class TileView: MonoBehaviour {
     }
 
 
+    public void UpdateSprite(TileData.Appliances appliance,Direction? direction){
+        applianceSprite relevantSprite = Array.Find(applianceSpriteList, (t) => {
+            return t.appliance == appliance;
+        });
+        // Debug.Log($"!@# found relevantSprite for {appliance.Appliance}: {relevantSprite != null}");
+        if (relevantSprite != null) {
+            ApplianceRenderer.sprite = relevantSprite.sprite;
+            ApplianceRenderer.flipX = direction == Direction.RIGHT;
+        }
+    }
+
     [Serializable]
     public class applianceSprite {
 

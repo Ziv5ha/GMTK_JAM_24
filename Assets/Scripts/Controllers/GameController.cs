@@ -16,7 +16,15 @@ public class GameController: MonoBehaviour {
     [SerializeField] private ShopController ShopControllerRef;
     [SerializeField] private StorageController StorageControllerRef;
 
-    public TileData.Appliances? ApplianceInHand;
+    private TileData.Appliances? _applianceInHand ;
+    public TileData.Appliances? ApplianceInHand {
+        get{ return _applianceInHand;} 
+        set{
+            handTile.UpdateSprite( value.HasValue ? value.Value : TileData.Appliances.Empty, null);
+            _applianceInHand = value;
+    }}
+
+    [SerializeField] private TileView handTile; 
 
     private bool gameStarted = false;
     private int round = 0;
@@ -68,7 +76,10 @@ public class GameController: MonoBehaviour {
         PlaceAppliance(DebugExitAppliance);
         //PlaceExit(width, height);
 
-        _cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
+        _cam.transform.position = new Vector3((float)width / 2 +2.5f, (float)height / 2 -1f, -10);
+        handTile.transform.position = new Vector3(-2f, 0f, -2);
+        handTile.gameObject.SetActive(true);
+        handTile.appAnimator.enabled = false;
         gameStarted = true;
     }
 
