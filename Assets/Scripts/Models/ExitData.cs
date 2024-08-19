@@ -17,9 +17,7 @@ public class ExitData: TileData {
         position = _position + DirectionToVector(direction);
     }
 
-    public override bool CanReceive(FishData.FishState? fish)
-    {
-        Debug.Log($"EXXX1 {fish}");
+    public override bool CanReceive(FishData.FishState? fish) {
         return fish == FishData.FishState.packed;
     }
     public override void ReceiveFish(FishData.FishState fish) {

@@ -63,8 +63,10 @@ public class GameController: MonoBehaviour {
         PlaceAppliance(new ScalerData(new Vector2(2, 2)));
         PlaceAppliance(new ConveyorData(new Vector2(3, 2)));
         PlaceAppliance(new PackerData(new Vector2(4, 2)));
-        PlaceAppliance(new ExitData(Direction.LEFT,new Vector2(5, 2)));
-        // PlaceExit(width, height);
+        ExitData DebugExitAppliance = new ExitData(Direction.LEFT, new Vector2(5, 2));
+        DebugExitAppliance.ESellFish += SellFish;
+        PlaceAppliance(DebugExitAppliance);
+        //PlaceExit(width, height);
 
         _cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
         gameStarted = true;
@@ -104,7 +106,7 @@ public class GameController: MonoBehaviour {
 
         TileView view = CurrentBoardView[app._position];
         view.UpdateFish(app.fish);
-        if (app.Appliance == TileData.Appliances.Scaler || app.Appliance == TileData.Appliances.Exit||
+        if (app.Appliance == TileData.Appliances.Scaler || app.Appliance == TileData.Appliances.Exit ||
         app.Appliance == TileData.Appliances.Packer) {
             view.UpdateAnim(app.Appliance, app.isBusy);
         } else {
@@ -200,8 +202,8 @@ public class GameController: MonoBehaviour {
 
     private void TryPull(TileData cur) {
         cur.WantToTake(out Vector2? takePos);
-        if(cur.Appliance == TileData.Appliances.Exit){
-            Debug.Log($"ddd {takePos}");
+        if (cur.Appliance == TileData.Appliances.Exit) {
+            //Debug.Log($"ddd {takePos}");
         }
         if (takePos.HasValue) {
 
@@ -219,7 +221,7 @@ public class GameController: MonoBehaviour {
         }
     }
     private void AttemptFishTransaction(TileData giver, TileData receiver, string action) {
-        
+
         if (giver.CanGive && receiver.CanReceive(giver.fish)) {
             receiver.ReceiveFish(giver.PushFish());
             UpdateFishView(receiver);
@@ -230,8 +232,10 @@ public class GameController: MonoBehaviour {
     }
 
     private void SellFish() {
-        _totalFishSold++;
+        GameConstants.TotalFishSold++;
+        //_totalFishSold++;
         ShopControllerRef.SellFish();
+        Debug.Log($"!@# GameConstants.TotalFishSold: {GameConstants.TotalFishSold}");
     }
 
     private void TileRightClicked(Vector2 pos) {
@@ -271,8 +275,9 @@ public class GameController: MonoBehaviour {
         return Direction.LEFT;
     }
 
-
-
+    public void EndGame() {
+        gameStarted = false;
+    }
 
     public class TileMap {
         public TileData tileData;

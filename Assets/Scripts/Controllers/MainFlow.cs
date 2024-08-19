@@ -27,6 +27,11 @@ public class MainFlow: MonoBehaviour {
         rentControllerRef.StartGame();
     }
 
+    public void EndGame() {
+        GameControllerRef.EndGame();
+        MenuManagerRef.GoToEndGameMenu();
+    }
+
     public void BuyAppliance(TileData.Appliances Appliance) {
         if (ShopControllerRef.TryBuyAppliances(Appliance)) {
             MenuManagerRef.CloseAll();

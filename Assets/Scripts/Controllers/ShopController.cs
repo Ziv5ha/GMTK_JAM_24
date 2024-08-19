@@ -7,7 +7,7 @@ public class ShopController: MonoBehaviour {
 
 
     private int _currentCoins = 999;
-    public int CurrentCoins { get { return _currentCoins; } set { _currentCoins = value; } }
+    public int CurrentCoins { get { return _currentCoins; } set { _currentCoins = value; UpdateCoinText(); } }
     private Dictionary<TileData.Appliances, int> _applianceCosts;
     [SerializeField] private TextMeshProUGUI[] _coinTexts;
     [SerializeField] private GameController GameControllerRef;
@@ -21,7 +21,6 @@ public class ShopController: MonoBehaviour {
 
     public void SellFish() {
         CurrentCoins += FISH_COIN_VALUE;
-        UpdateCoinText();
     }
 
     private void CreateApplianceCostDic() {
@@ -36,17 +35,14 @@ public class ShopController: MonoBehaviour {
         if (CurrentCoins < _applianceCosts[appliance]) return false;
 
         CurrentCoins -= _applianceCosts[appliance];
-        // TODO put appliance in "hand"
         GameControllerRef.ApplianceInHand = appliance;
-        UpdateCoinText();
         return true;
     }
     public void PayRent(int rent) {
         CurrentCoins -= rent;
-        UpdateCoinText();
-        
+
     }
-    public void UpdateCoinText() {
+    private void UpdateCoinText() {
         // Debug.Log($"!@# Updating Coin Texts, CurrentText: {CurrentCoins}");
         foreach (var coinText in _coinTexts) {
             coinText.text = CurrentCoins.ToString();
