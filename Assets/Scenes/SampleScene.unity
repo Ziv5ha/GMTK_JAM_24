@@ -528,7 +528,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -25, y: -25}
-  m_SizeDelta: {x: 95, y: 0}
+  m_SizeDelta: {x: 95, y: 55.6994}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &146200749
 MonoBehaviour:
@@ -1119,7 +1119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &254682315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3534,7 +3534,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 140, y: 0}
   m_SizeDelta: {x: -140, y: 0}
   m_Pivot: {x: 0, y: 0.5}
@@ -3980,6 +3980,7 @@ MonoBehaviour:
   GameViewRef: {fileID: 254682315}
   GameControllerRef: {fileID: 1257585533}
   ShopControllerRef: {fileID: 1257585536}
+  rentControllerRef: {fileID: 1257585537}
 --- !u!4 &1257585535
 Transform:
   m_ObjectHideFlags: 0
@@ -4641,7 +4642,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 69.15
+  m_fontSize: 58.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5968,7 +5969,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.75
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6146,7 +6147,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 55, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 50, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &2053599590
 MonoBehaviour:

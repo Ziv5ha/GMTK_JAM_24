@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,18 +14,47 @@ public class RentController : MonoBehaviour
     [SerializeField] private Slider RentbarSlider;
     [SerializeField] private ShopController ShopControllerRef;
     // Start is called before the first frame update
-    
-    public  void UpdateRentBar(int round){
-        float remainder = round % (_rentTime);
+    private float curVal = 1f;
+    private float nextVal = 1f;
+    private float lerpTime = GameConstants.RoundDuration;
+    private bool gameStarted = false;
 
-        float frac =  ( _rentTime - remainder -1) / _rentTime;
+      public void StartGame() {
+        gameStarted = true;
+    }
+
+
+    private void Update() {
+        if(!gameStarted){
+            return;
+        }
         
-        Debug.Log($"{round} {remainder} {_rentTime-remainder} {(_rentTime-remainder)/_rentTime}");
+        RentbarSlider.value = nextVal == 1 ? 1 : Mathf.Lerp(curVal,nextVal,lerpTime);
         
-        RentbarSlider.value = frac;
-        if(frac == 0f){
+        if(lerpTime<GameConstants.RoundDuration){
+            lerpTime+=Time.deltaTime;
+        }
+        
+    }
+
+    private void DoLerp(float target){
+        Debug.Log($"${target}");
+        curVal = RentbarSlider.value ;
+        nextVal =target ;
+        lerpTime = 0;
+    }
+
+    public  void UpdateRentBar(int round){
+        if(nextVal == 0f){
             ShopControllerRef.PayRent(_baseRent);
         }
+        float remainder = round % (_rentTime+1);
+
+        float frac =  ( _rentTime - remainder) / _rentTime;
+        
+        
+        DoLerp(frac);
+        
 
 
     }

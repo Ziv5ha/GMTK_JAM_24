@@ -47,7 +47,7 @@ public class ShopController: MonoBehaviour {
         
     }
     public void UpdateCoinText() {
-        Debug.Log($"!@# Updating Coin Texts, CurrentText: {CurrentCoins}");
+        // Debug.Log($"!@# Updating Coin Texts, CurrentText: {CurrentCoins}");
         foreach (var coinText in _coinTexts) {
             coinText.text = CurrentCoins.ToString();
         }

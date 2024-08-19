@@ -8,6 +8,7 @@ public class MainFlow: MonoBehaviour {
     [SerializeField] private GameView GameViewRef;
     [SerializeField] private GameController GameControllerRef;
     [SerializeField] private ShopController ShopControllerRef;
+    [SerializeField] private RentController rentControllerRef;
 
     private void Start() {
         InitAll();
@@ -23,6 +24,7 @@ public class MainFlow: MonoBehaviour {
         MenuManagerRef.CloseAll();
         GameViewRef.gameObject.SetActive(true);
         GameControllerRef.CreateBoard();
+        rentControllerRef.StartGame();
     }
 
     public void BuyAppliance(TileData.Appliances Appliance) {

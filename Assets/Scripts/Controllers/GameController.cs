@@ -23,7 +23,6 @@ public class GameController: MonoBehaviour {
     private bool gameStarted = false;
     private int round = 0;
     private float timer = 0;
-    private float roundDuration = 0.5f;
     private int width = 0;
     private int height = 0;
 
@@ -34,7 +33,7 @@ public class GameController: MonoBehaviour {
     public void CreateBoard() {
 
         width = UnityEngine.Random.Range(5, 10);
-        height = UnityEngine.Random.Range(4, 10);
+        height = UnityEngine.Random.Range(5, 10);
 
         CurrentBoardData = new Dictionary<Vector2, TileData>();
         CurrentBoardView = new Dictionary<Vector2, TileView>();
@@ -144,7 +143,7 @@ public class GameController: MonoBehaviour {
     public void Update() {
         if (gameStarted) {
             timer += Time.deltaTime;
-            if (timer >= roundDuration) {
+            if (timer >= GameConstants.RoundDuration) {
                 round += 1;
                 timer = 0;
                 Advance();
