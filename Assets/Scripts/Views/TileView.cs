@@ -50,29 +50,18 @@ public class TileView: MonoBehaviour {
         }
 
     }
-    public void RotateAppliance(Direction d) {
-        switch (d) {
-            case Direction.UP:
-            case Direction.DOWN:
-                ApplianceRenderer.flipX = d == Direction.UP;
-                ApplianceRenderer.flipY = d == Direction.UP;
-                ApplianceRenderer.transform.rotation = Quaternion.Euler(0, 0, 90);
-                break;
-            case Direction.RIGHT:
-            case Direction.LEFT:
-                ApplianceRenderer.flipX = d == Direction.LEFT;
-                ApplianceRenderer.flipY = false;
-                ApplianceRenderer.transform.rotation = Quaternion.Euler(0, 0, 0);
-                break;
-            default:
-                break;
-        }
+    public void RotateAppliance(TileData data) {
+        UpdateAnim(data,data.isBusy);
     }
 
-    public void UpdateAnim(TileData.Appliances app, bool isBusy) {
-        string state = isBusy ? "busy" : "idle";
-        string key = $"{app}_{state}";
+    public void UpdateAnim(TileData app, bool isBusy) {
 
+        string state = isBusy ? "busy" : "idle";
+        string key = $"{app.Appliance}_{state}";
+        if(app.Appliance == TileData.Appliances.Conveyor){
+
+            key = $"{app.Appliance}_{app.direction}";
+        }
         appAnimator.enabled = true;
         if (!appAnimator.GetCurrentAnimatorStateInfo(0).IsName(key)) {
             appAnimator.Play(key);

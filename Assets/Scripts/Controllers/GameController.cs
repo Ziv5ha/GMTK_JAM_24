@@ -106,9 +106,13 @@ public class GameController: MonoBehaviour {
 
         TileView view = CurrentBoardView[app._position];
         view.UpdateFish(app.fish);
-        if (app.Appliance == TileData.Appliances.Scaler || app.Appliance == TileData.Appliances.Exit ||
-        app.Appliance == TileData.Appliances.Packer) {
-            view.UpdateAnim(app.Appliance, app.isBusy);
+        if (
+            app.Appliance == TileData.Appliances.Scaler || 
+            app.Appliance == TileData.Appliances.Exit ||
+            app.Appliance == TileData.Appliances.Packer || 
+            app.Appliance == TileData.Appliances.Conveyor
+        ) {
+            view.UpdateAnim(app, app.isBusy);
         } else {
             view.appAnimator.enabled = false;
         }
@@ -258,7 +262,7 @@ public class GameController: MonoBehaviour {
     private void RotateApplience(TileData td) {
         // Debug.Log($"!@# Rotating {td}");
         td.direction = GetNextDirection(td.direction);
-        CurrentBoardView[td._position].RotateAppliance(td.direction);
+        CurrentBoardView[td._position].RotateAppliance(td);
     }
 
     private Direction GetNextDirection(Direction d) {
