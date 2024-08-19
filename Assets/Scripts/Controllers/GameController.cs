@@ -132,6 +132,10 @@ public class GameController: MonoBehaviour {
             case TileData.Appliances.Conveyor:
             case TileData.Appliances.Packer:
             case TileData.Appliances.FishBin:
+
+                if(ApplianceInHand!=null){
+                    return;
+                }
                 ApplianceInHand = tile.Appliance;
                 PlaceAppliance(TileDataFactory(TileData.Appliances.Empty, pos));
                 break;
