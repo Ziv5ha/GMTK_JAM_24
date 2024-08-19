@@ -76,20 +76,21 @@ public class GameController: MonoBehaviour {
         PlaceAppliance(exitAppliance);
     }
     private void PlaceAppliance(TileData appliance) {
-        // Debug.Log($"!@# PlaceAppliance: {appliance}");
+        Debug.Log($"!@# PlaceAppliance: {appliance}");
         Vector2 pos = appliance._position;
         CurrentBoardData[pos] = appliance;
         CurrentBoardData[pos].fish = null;
         UpdateFishView(appliance);
-        // Debug.Log($"!@# CurrentBoardData[pos]: {CurrentBoardData[pos]}");
+        Debug.Log($"!@# CurrentBoardData[pos]: {CurrentBoardData[pos]}");
         UpdateApplianceViews(appliance, pos);
     }
     private void UpdateApplianceViews(TileData appliance, Vector2 pos) {
         TileView view = CurrentBoardView[pos];
+
         TileView.applianceSprite relevantSprite = Array.Find(view.applianceSpriteList, (t) => {
             return t.appliance == appliance.Appliance;
         });
-        // Debug.Log($"!@# found relevantSprite: {relevantSprite != null}");
+        // Debug.Log($"!@# found relevantSprite for {appliance.Appliance}: {relevantSprite != null}");
         if (relevantSprite != null) {
             view.ApplianceRenderer.sprite = relevantSprite.sprite;
             view.ApplianceRenderer.flipX = appliance.direction == Direction.RIGHT;
@@ -100,7 +101,8 @@ public class GameController: MonoBehaviour {
 
         TileView view = CurrentBoardView[app._position];
         view.UpdateFish(app.fish);
-        if (app.Appliance == TileData.Appliances.Scaler || app.Appliance == TileData.Appliances.Exit) {
+        if (app.Appliance == TileData.Appliances.Scaler || app.Appliance == TileData.Appliances.Exit||
+        app.Appliance == TileData.Appliances.Packer) {
             view.UpdateAnim(app.Appliance, app.isBusy);
         } else {
             view.appAnimator.enabled = false;

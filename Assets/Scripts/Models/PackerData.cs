@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PackerData: TileData {
 
-    public PackerData(Vector2 position) : base(Appliances.Scaler, position) {
+    public PackerData(Vector2 position) : base(Appliances.Packer, position) {
         ProcessingDuration = 3;
 
     }

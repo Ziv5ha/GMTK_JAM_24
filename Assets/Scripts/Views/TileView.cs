@@ -72,10 +72,10 @@ public class TileView: MonoBehaviour {
     public void UpdateAnim(TileData.Appliances app,bool isBusy){
         string state = isBusy? "busy" : "idle";
         string key = $"{app}_{state}";
-        
+
         appAnimator.enabled = true;
         if(!appAnimator.GetCurrentAnimatorStateInfo(0).IsName(key)){
-            // Debug.Log("playing "+ key);
+            Debug.Log("playing "+ key);
             appAnimator.Play(key);
 
         }
