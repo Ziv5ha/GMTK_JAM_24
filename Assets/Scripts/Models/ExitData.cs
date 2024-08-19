@@ -12,14 +12,13 @@ public class ExitData: TileData {
     public void SetDirection(Direction direction) {
         this.direction = direction;
     }
-    public override void WantToTake(out Vector2? position) {
-
+    public override bool WantToTake(out Vector2? position) {
         position = _position + DirectionToVector(direction);
+        return true;
     }
 
     public override bool CanReceive(FishData.FishState? fish)
     {
-        Debug.Log($"EXXX1 {fish}");
         return fish == FishData.FishState.packed;
     }
     public override void ReceiveFish(FishData.FishState fish) {

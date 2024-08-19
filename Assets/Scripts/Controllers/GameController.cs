@@ -186,9 +186,9 @@ public class GameController: MonoBehaviour {
         RentControllerRef.UpdateRentBar(round);
 
         void TryPush(TileData cur) {
-            cur.WantToPush(out Vector2? givePos);
+            
 
-            if (givePos.HasValue) {
+            if (cur.WantToPush(out Vector2? givePos)) {
                 Vector2 giveTargetPos = givePos.Value;
 
                 if (CurrentBoardData.TryGetValue(giveTargetPos, out TileData giveTarget)) {
@@ -199,12 +199,8 @@ public class GameController: MonoBehaviour {
     }
 
     private void TryPull(TileData cur) {
-        cur.WantToTake(out Vector2? takePos);
-        if(cur.Appliance == TileData.Appliances.Exit){
-            Debug.Log($"ddd {takePos}");
-        }
-        if (takePos.HasValue) {
-
+        
+        if (cur.WantToTake(out Vector2? takePos)) {
             Vector2 takeTargetPos = takePos.Value;
             if (CurrentBoardData.TryGetValue(takeTargetPos, out TileData takeTarget)) {
                 AttemptFishTransaction(takeTarget, cur, "pull");

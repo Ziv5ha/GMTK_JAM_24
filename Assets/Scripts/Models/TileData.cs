@@ -17,12 +17,14 @@ public class TileData {
 
     static public int Cost = 0;
     public string id { get { return $"{Appliance} ({_position})"; } }
-    virtual public void WantToTake(out Vector2? direction) {
+    virtual public bool WantToTake(out Vector2? direction) {
+        direction = null;
+        return false;
 
-        direction = null;
     }
-    virtual public void WantToPush(out Vector2? direction) {
+    virtual public bool WantToPush(out Vector2? direction) {
         direction = null;
+        return false;
     }
     public bool isBusy {
         get { return _isProcessing > 0; }
