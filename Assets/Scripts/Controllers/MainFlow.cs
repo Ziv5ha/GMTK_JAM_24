@@ -29,9 +29,19 @@ public class MainFlow: MonoBehaviour {
         StorageControllerRef.StartGame();
     }
 
+    public void OpenShop() {
+        GameViewRef.gameObject.SetActive(false);
+        MenuManagerRef.GoToShop();
+    }
+    public void CloseShop() {
+        GameViewRef.gameObject.SetActive(true);
+        MenuManagerRef.CloseAll();
+    }
+
     public void EndGame() {
         GameControllerRef.EndGame();
         MenuManagerRef.GoToEndGameMenu();
+        GameViewRef.gameObject.SetActive(false);
     }
 
     public void BuyAppliance(TileData.Appliances Appliance) {

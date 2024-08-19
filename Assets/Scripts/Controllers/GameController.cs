@@ -21,8 +21,8 @@ public class GameController: MonoBehaviour {
     private bool gameStarted = false;
     private int round = 0;
     private float timer = 0;
-    private int width = 0;
-    private int height = 0;
+    private int width = 7;
+    private int height = 10;
 
     public void Init() {
 
@@ -30,8 +30,8 @@ public class GameController: MonoBehaviour {
 
     public void CreateBoard() {
 
-        width = UnityEngine.Random.Range(7, 10);
-        height = UnityEngine.Random.Range(7, 10);
+        //width = UnityEngine.Random.Range(7, 10);
+        //height = UnityEngine.Random.Range(7, 10);
 
         CurrentBoardData = new Dictionary<Vector2, TileData>();
         CurrentBoardView = new Dictionary<Vector2, TileView>();
@@ -135,7 +135,7 @@ public class GameController: MonoBehaviour {
             case TileData.Appliances.Packer:
             case TileData.Appliances.FishBin:
 
-                if(ApplianceInHand!=null){
+                if (ApplianceInHand != null) {
                     return;
                 }
                 ApplianceInHand = tile.Appliance;
@@ -237,7 +237,7 @@ public class GameController: MonoBehaviour {
 
     private void SellFish() {
         GameConstants.TotalFishSold++;
-        //_totalFishSold++;
+        GameConstants.CurrentFishInStorage++;
         ShopControllerRef.SellFish();
         Debug.Log($"!@# GameConstants.TotalFishSold: {GameConstants.TotalFishSold}");
     }

@@ -45,7 +45,7 @@ public class StorageController: MonoBehaviour {
 
         bool ItsShipmentTime = round % (GameConstants.ShipmentTime + 1) == 0;
         if (ItsShipmentTime) {
-            Debug.Log($"!@# It's shipment time! shipping {GameConstants.ShipmentSize} of {GameConstants.CurrentFishInStorage} currently in storage.");
+            //Debug.Log($"!@# It's shipment time! shipping {GameConstants.ShipmentSize} of {GameConstants.CurrentFishInStorage} currently in storage.");
             GameConstants.CurrentFishInStorage -= GameConstants.ShipmentSize;
             if (GameConstants.CurrentFishInStorage == 0) {
                 EEndGame();
@@ -53,7 +53,6 @@ public class StorageController: MonoBehaviour {
         }
 
         float frac = GameConstants.CurrentFishInStorage / GameConstants.StorageCapacity;
-        Debug.Log($"!@# UpdateStorage: {GameConstants.CurrentFishInStorage}/{GameConstants.StorageCapacity} = {frac}");
 
         DoLerp(frac);
 

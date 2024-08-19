@@ -7,7 +7,7 @@ public class GameConstants {
     static public float CurrentFishInStorage = 100;
     static public float StorageCapacity = 100;
     static public int ShipmentTime = 5;
-    static public int ShipmentSize = 2;
+    static public int ShipmentSize = 5;
 
 
     // Process Time
