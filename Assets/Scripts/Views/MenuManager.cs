@@ -8,17 +8,21 @@ public class MenuManager: MonoBehaviour {
 
     [SerializeField] private GameObject MainMenuRef;
     [SerializeField] private GameObject EndGameMenuRef;
+
+    [SerializeField] private GameObject ShopContainer;
+    [SerializeField] private GameObject UpgradeContainer;
     //[SerializeField] private GameObject ShopViewRef;
 
-    public enum Menus { None, MainMenu, Shop, End };
+    public enum Menus { None, MainMenu, Shop, Upgrade, End };
 
     private Menus ActiveMenu {
         set {
-            //MainMenuRef.gameObject.SetActive(value == Menus.MainMenu);
-            ShopViewRef.gameObject.SetActive(value == Menus.Shop);
+            ShopViewRef.gameObject.SetActive(value == Menus.Shop || value == Menus.Upgrade);
             MainMenuRef.SetActive(value == Menus.MainMenu);
             EndGameMenuRef.SetActive(value == Menus.End);
-            //ShopViewRef.SetActive(value == Menus.Shop);
+
+            ShopContainer.SetActive(value == Menus.Shop);
+            UpgradeContainer.SetActive(value == Menus.Upgrade);
         }
     }
 
@@ -36,7 +40,11 @@ public class MenuManager: MonoBehaviour {
     public void GoToShop() {
         ActiveMenu = Menus.Shop;
     }
+    public void GoToUpgrade() {
+        ActiveMenu = Menus.Upgrade;
+    }
     public void GoToEndGameMenu() {
         ActiveMenu = Menus.End;
     }
+
 }

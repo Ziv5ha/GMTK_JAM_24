@@ -44,6 +44,11 @@ public class MainFlow: MonoBehaviour {
         GameViewRef.gameObject.SetActive(false);
     }
 
+    public void OpenUpgradeMenu() {
+        GameViewRef.gameObject.SetActive(false);
+        MenuManagerRef.GoToUpgrade();
+    }
+
     public void BuyAppliance(TileData.Appliances Appliance) {
         if (ShopControllerRef.TryBuyAppliances(Appliance)) {
             MenuManagerRef.CloseAll();

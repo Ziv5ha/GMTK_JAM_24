@@ -7,8 +7,8 @@ using UnityEngine.UIElements;
 public class TileData {
 
     protected FishData.FishState? _Fish;
-    protected int _isProcessing = 0;
-    virtual protected int ProcessingDuration{ get{return 1;}} 
+    protected float _isProcessing = 0;
+    virtual protected float ProcessingDuration { get { return 1; } }
     public Direction direction { get; set; } = Direction.LEFT;
 
     public FishData.FishState? fish { get { return _Fish; } set { _Fish = value; } }
@@ -29,7 +29,7 @@ public class TileData {
     public bool isBusy {
         get { return _isProcessing > 0; }
     }
-    public int processingLeft {
+    public float processingLeft {
         get { return _isProcessing; }
     }
 
@@ -37,7 +37,7 @@ public class TileData {
 
     virtual public bool CanGive { get { return HasFish && !isBusy; } }
 
-    virtual public bool CanReceive (FishData.FishState? fish){ return Interacable && !HasFish && !isBusy;  }
+    virtual public bool CanReceive(FishData.FishState? fish) { return Interacable && !HasFish && !isBusy; }
 
 
     public TileData(Appliances appliance, Vector2 position) {

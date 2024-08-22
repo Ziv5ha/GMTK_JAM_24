@@ -6,10 +6,11 @@ using UnityEngine;
 public class ShopController: MonoBehaviour {
 
 
-    private int _currentCoins = 0;
+    private int _currentCoins = 50;
     public int CurrentCoins { get { return _currentCoins; } set { _currentCoins = value; UpdateCoinText(); } }
     private Dictionary<TileData.Appliances, int> _applianceCosts;
     [SerializeField] private TextMeshProUGUI[] _coinTexts;
+    [SerializeField] private TextMeshProUGUI[] _toalFishTexts;
     [SerializeField] private GameController GameControllerRef;
 
     const int FISH_COIN_VALUE = 1;
@@ -21,6 +22,7 @@ public class ShopController: MonoBehaviour {
 
     public void SellFish() {
         CurrentCoins += FISH_COIN_VALUE;
+        UpdateTotalFishText();
     }
 
     private void CreateApplianceCostDic() {
@@ -50,6 +52,16 @@ public class ShopController: MonoBehaviour {
         }
         foreach (var coinText in _coinTexts) {
             coinText.text = CoinString;
+        }
+    }
+    private void UpdateTotalFishText() {
+        // Debug.Log($"!@# Updating Coin Texts, CurrentText: {CurrentCoins}");
+        string TotalFishString = $"{GameConstants.TotalFishSold}";
+        while (TotalFishString.Length < 3) {
+            TotalFishString = $"0{TotalFishString}";
+        }
+        foreach (var totalFishText in _toalFishTexts) {
+            totalFishText.text = TotalFishString;
         }
     }
 

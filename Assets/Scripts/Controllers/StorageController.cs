@@ -47,7 +47,7 @@ public class StorageController: MonoBehaviour {
         if (ItsShipmentTime) {
             //Debug.Log($"!@# It's shipment time! shipping {GameConstants.ShipmentSize} of {GameConstants.CurrentFishInStorage} currently in storage.");
             GameConstants.CurrentFishInStorage -= GameConstants.ShipmentSize;
-            if (GameConstants.CurrentFishInStorage == 0) {
+            if (GameConstants.CurrentFishInStorage <= 0) {
                 EEndGame();
             }
         }

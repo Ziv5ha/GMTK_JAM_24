@@ -15,16 +15,21 @@ public class GameController: MonoBehaviour {
     [SerializeField] private GameObject _gameView;
     [SerializeField] private ShopController ShopControllerRef;
     [SerializeField] private StorageController StorageControllerRef;
+    [SerializeField] private MainFlow MainFlowRef;
 
-    private TileData.Appliances? _applianceInHand ;
+    private List<PeneltiesORBonus> PeneltiesList = new List<PeneltiesORBonus>();
+    private List<PeneltiesORBonus> BonusList = new List<PeneltiesORBonus>();
+
+    private TileData.Appliances? _applianceInHand;
     public TileData.Appliances? ApplianceInHand {
-        get{ return _applianceInHand;} 
-        set{
-            handTile.UpdateSprite( value.HasValue ? value.Value : TileData.Appliances.Empty, null);
+        get { return _applianceInHand; }
+        set {
+            handTile.UpdateSprite(value.HasValue ? value.Value : TileData.Appliances.Empty, null);
             _applianceInHand = value;
-    }}
+        }
+    }
 
-    [SerializeField] private TileView handTile; 
+    [SerializeField] private TileView handTile;
 
     private bool gameStarted = false;
     private int round = 0;
@@ -76,7 +81,7 @@ public class GameController: MonoBehaviour {
         PlaceAppliance(DebugExitAppliance);
         //PlaceExit(width, height);
 
-        _cam.transform.position = new Vector3((float)width / 2 +2.5f, (float)height / 2 -1f, -10);
+        _cam.transform.position = new Vector3((float)width / 2 + 2.5f, (float)height / 2 - 1f, -10);
         handTile.transform.position = new Vector3(-2f, 0f, -2);
         handTile.gameObject.SetActive(true);
         handTile.appAnimator.enabled = false;
@@ -92,12 +97,11 @@ public class GameController: MonoBehaviour {
         PlaceAppliance(exitAppliance);
     }
     private void PlaceAppliance(TileData appliance) {
-        Debug.Log($"!@# PlaceAppliance: {appliance}");
+        //Debug.Log($"!@# PlaceAppliance: {appliance}");
         Vector2 pos = appliance._position;
         CurrentBoardData[pos] = appliance;
         CurrentBoardData[pos].fish = null;
         UpdateFishView(appliance);
-        Debug.Log($"!@# CurrentBoardData[pos]: {CurrentBoardData[pos]}");
         UpdateApplianceViews(appliance, pos);
     }
     private void UpdateApplianceViews(TileData appliance, Vector2 pos) {
@@ -118,9 +122,9 @@ public class GameController: MonoBehaviour {
         TileView view = CurrentBoardView[app._position];
         view.UpdateFish(app.fish);
         if (
-            app.Appliance == TileData.Appliances.Scaler || 
+            app.Appliance == TileData.Appliances.Scaler ||
             app.Appliance == TileData.Appliances.Exit ||
-            app.Appliance == TileData.Appliances.Packer || 
+            app.Appliance == TileData.Appliances.Packer ||
             app.Appliance == TileData.Appliances.Conveyor
         ) {
             view.UpdateAnim(app, app.isBusy);
@@ -232,7 +236,7 @@ public class GameController: MonoBehaviour {
 
     void test(TileData cur, string message) {
         if (cur.Appliance == TileData.Appliances.Conveyor) {
-            Debug.Log($"round {round} - " + message);
+            //Debug.Log($"round {round} - " + message);
         }
     }
     private void AttemptFishTransaction(TileData giver, TileData receiver, string action) {
@@ -250,7 +254,7 @@ public class GameController: MonoBehaviour {
         GameConstants.TotalFishSold++;
         GameConstants.CurrentFishInStorage++;
         ShopControllerRef.SellFish();
-        Debug.Log($"!@# GameConstants.TotalFishSold: {GameConstants.TotalFishSold}");
+        CheckSelectUpgrade();
     }
 
     private void TileRightClicked(Vector2 pos) {
@@ -294,8 +298,32 @@ public class GameController: MonoBehaviour {
         gameStarted = false;
     }
 
+    public void CheckSelectUpgrade() {
+        if (GameConstants.FishSoldStages.Contains(GameConstants.TotalFishSold)) {
+            MainFlowRef.OpenUpgradeMenu();
+        }
+    }
+    public void BetterProcesses() {
+        GameConstants.PackerProcessTime -= 0.5f;
+        GameConstants.ScalerProcessTime -= 0.5f;
+
+        GameConstants.ShipmentTime -= 5;
+        GameConstants.ShipmentSize += 2;
+    }
+    public void BetterShipments() {
+        GameConstants.ShipmentTime += 3;
+        GameConstants.ShipmentSize -= 1;
+
+        GameConstants.PackerProcessTime += 0.25f;
+        GameConstants.ScalerProcessTime += 0.25f;
+    }
+
     public class TileMap {
         public TileData tileData;
         public TileView tileView;
+    }
+    public class PeneltiesORBonus {
+        public string name;
+        public Action action;
     }
 }

@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class ConveyorData: TileData {
 
-    override protected int ProcessingDuration{ get{return GameConstants.ConveyorProcessTime;}} 
+    override protected float ProcessingDuration { get { return GameConstants.ConveyorProcessTime; } }
 
 
     public ConveyorData(Vector2 position) : base(Appliances.Conveyor, position) { }
     public new int Cost = 5;
 
-    public override bool CanReceive (FishData.FishState? fish){  return !HasFish; }
+    public override bool CanReceive(FishData.FishState? fish) { return !HasFish; }
 
 
     public void SetDirection(Direction direction) {
-        this.direction = direction; 
+        this.direction = direction;
     }
     public override bool WantToTake(out Vector2? direction) {
         bool canReceive = this.CanReceive(FishData.FishState.clean);
